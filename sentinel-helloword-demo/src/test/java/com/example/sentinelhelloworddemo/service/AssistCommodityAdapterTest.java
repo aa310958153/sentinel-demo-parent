@@ -16,11 +16,12 @@ import com.alibaba.csp.sentinel.slots.system.SystemRuleManager;
 import com.alibaba.csp.sentinel.util.TimeUtil;
 import com.example.sentinelhelloworddemo.SentinelHellowordDemoApplicationTests;
 import com.example.sentinelhelloworddemo.constans.SentinelConstants;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+
+import java.io.IOException;
+import java.util.*;
 import javax.annotation.Resource;
+
+import com.example.sentinelhelloworddemo.util.FileUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.reflect.Whitebox;
@@ -37,6 +38,7 @@ public class AssistCommodityAdapterTest {
 
     @Resource
     private AssistCommodityAdapter adapter;
+
     /**
      * 配合控制台使用:
      * 文档参考：https://sentinelguard.io/zh-cn/docs/dashboard.html
@@ -79,18 +81,7 @@ public class AssistCommodityAdapterTest {
         List<Thread> tasks = new ArrayList<>();
         for (int i = 0; i < concurrency; i++) {
             Thread entryThread = new Thread(() -> {
-                Date date=new Date(TimeUtil.currentTimeMillis()+20000) ;
-                //模拟20秒后服务恢复
-                MockAssistCommodityQueryApiImpl.data.set(date);
-                boolean isEnd = false;
-                while (!isEnd) {
-                    //恢复后10秒结束
-                    Date endDate=new Date(MockAssistCommodityQueryApiImpl.data.get().getTime()+30000) ;
-                    isEnd = endDate
-                        .before(new Date());
-                    if (isEnd) {
-                        System.out.println("结束");
-                    }
+                while (true) {
                     try {
                         adapter.queryCommoditySale(null);
                     } catch (Exception e) {
@@ -107,25 +98,7 @@ public class AssistCommodityAdapterTest {
         }
     }
 
-
-    /**
-     * 初始化系统高保护规则
-     */
-    private static void initSystemRule() {
-        SystemRule rule = new SystemRule();
-        // max load is 3
-        rule.setHighestSystemLoad(3.0);
-        // max cpu usage is 60%
-        rule.setHighestCpuUsage(0.6);
-        // max avg rt of all request is 10 ms
-        rule.setAvgRt(10);
-        // max total qps is 20
-        rule.setQps(20);
-        // max parallel working thread is 10
-        rule.setMaxThread(10);
-
-        SystemRuleManager.loadRules(Collections.singletonList(rule));
-    }
+    
     /**
      * 初始化流控规则
      */
@@ -175,4 +148,5 @@ public class AssistCommodityAdapterTest {
                 }
             });
     }
+
 }

@@ -4,6 +4,8 @@ import com.alibaba.csp.sentinel.Entry;
 import com.alibaba.csp.sentinel.SphU;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.example.sentinelhelloworddemo.constans.SentinelConstants;
+
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Resource;
@@ -26,6 +28,8 @@ public class AssistCommodityAdapter {
         } catch (BlockException ex) {
             System.out.println("#633 pageQueryMainCommodity 触发sentinel降级");
             return Collections.emptyList();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
 
