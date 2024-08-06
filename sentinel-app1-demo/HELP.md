@@ -11,11 +11,14 @@
 ```
 启动时加入 JVM 参数 -Dcsp.sentinel.dashboard.server=localhost:8080 指定控制台地址和端口。若启动多个应用，则需要通过 -Dcsp.sentinel.api.port=xxxx 指定客户端监控 API 的端口（默认是 8719）。
 
-# 监控端点
+# 监控端点(https://github.com/alibaba/Sentinel/wiki/实时监控#实时查询)
 ## dashboardClient
 * [查看NodeSelectorSlot内存结构](http://localhost:8719/tree?type=root)
 * [查看ClusterBuilderSlot内存结构](http://localhost:8719/origin?id=caller)
 * [查看资源的实时统计信息](http://localhost:8719/cnode?id=resourceName)
+* [查看所有生效的限流规则](localhost:8719/getRules?type=flow)
+* [查看所有生效的留空规则 ](localhost:8719/getRules?type=flow)type=flow 以 JSON 格式返回现有的限流规则，degrade 返回现有生效的降级规则列表，system 则返回系统保护规则。
+* [查看资源规则放行情况](http://localhost:8719/cnode?id=com.example.sentinelapp1demo.service.UserServiceImpl.findByUser)
 ```
 idx id   thread  pass  blocked   success  total Rt   1m-pass   1m-block   1m-all   exeption
 2   abc647 0     46     0           46     46   1       2763      0         2763     0
