@@ -11,6 +11,7 @@
    <modules>
        <module>sentinel-helloword-demo</module>
        <module>sentinel-app1-demo</module>
+       <module>sentinel-nacos-client-demo</module>
    </modules>
 
 </project>

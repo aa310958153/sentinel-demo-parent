@@ -39,15 +39,11 @@ public class UserController {
     // http://127.0.0.1:8080/hello?name=lisi
     @RequestMapping("/helloSentinelResource")
     @ResponseBody
-    @SentinelResource(value = "helloQuery",blockHandler="blockHelloSentinelResource")
+    @SentinelResource(value = "helloQuery")
     public String helloSentinelResource(@RequestParam(name = "name", defaultValue = "unknown user") String name) {
         return "Hello " + name;
     }
 
-
-    public String blockHelloSentinelResource(@RequestParam(name ="name") String name) {
-        return "我是降级返回";
-    }
 
     @RequestMapping("/hello")
     @ResponseBody
@@ -97,7 +93,7 @@ public class UserController {
 
     @ModelAttribute
     public void parseUser(@RequestParam(name = "name", defaultValue = "unknown user") String name
-        , @RequestParam(name = "age", defaultValue = "12") Integer age, User user) {
+            , @RequestParam(name = "age", defaultValue = "12") Integer age, User user) {
         user.setName("zhangsan");
         user.setAge(18);
     }
