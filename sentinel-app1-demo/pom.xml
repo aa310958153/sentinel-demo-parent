@@ -75,7 +75,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.example.sentinelapp1demo.SentinelApp1DemoApplication</mainClass>
+                    <mainClass>com.example.sentinelapp1demo.ClusterDemoApplication</mainClass>
                     <skip>true</skip>
                 </configuration>
                 <executions>

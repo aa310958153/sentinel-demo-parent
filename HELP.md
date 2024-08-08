@@ -27,6 +27,6 @@ java  -Dserver.port=8080 -Dcsp.sentinel.dashboard.server=localhost:8080 -Dprojec
 日志排查 如果未注册到dashboard
 
 ```
-${user.home}/logs/csp/sentinel-record.log.xxx
+${user.home}/logs/csp/sentinel-record.log.xxx  or cd ~/logs/csp/sentinel-record.log.xxx
 http://127.0.0.1:8848/nacos
 ```
