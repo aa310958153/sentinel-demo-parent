@@ -19,7 +19,6 @@ import java.util.Properties;
 
 @Configuration
 @ConfigurationProperties(prefix = "sentinel.nacos")
-
 public class SentinelNacosDataSourceConfig implements InitializingBean {
 
     private static final String DEFAULT_ADDRESS = "localhost:8848";
