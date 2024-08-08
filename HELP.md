@@ -13,6 +13,7 @@ https://github.com/alibaba/Sentinel/wiki/日志
 * [生产环境是sentinel](https://github.com/alibaba/Sentinel/wiki/在生产环境中使用-Sentinel)
 * [推模式规则改造](https://github.com/alibaba/Sentinel/wiki/Sentinel-控制台（集群流控管理）#规则配置)
 * [秒级监控](https://github.com/alibaba/Sentinel/wiki/日志#秒级监控日志)
+* [常见问题](https://sentinelguard.io/zh-cn/docs/faq.html)
 # 部署sentinel控制台
 * [文档参考](https://sentinelguard.io/zh-cn/docs/dashboard.html)
 ```
