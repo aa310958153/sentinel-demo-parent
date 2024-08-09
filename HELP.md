@@ -14,6 +14,10 @@ https://github.com/alibaba/Sentinel/wiki/日志
 * [推模式规则改造](https://github.com/alibaba/Sentinel/wiki/Sentinel-控制台（集群流控管理）#规则配置)
 * [秒级监控](https://github.com/alibaba/Sentinel/wiki/日志#秒级监控日志)
 * [常见问题](https://sentinelguard.io/zh-cn/docs/faq.html)
+* [框架適配](https://github.com/alibaba/spring-cloud-alibaba/wiki/Sentinel)
+* [spring clod开源整合](https://github.com/wuyeing/Spring-Cloud-Starter-Alibaba-Sentinel-With-Nacos)
+* [spring-cloud-alibaba](https://github.com/alibaba/spring-cloud-alibaba/tree/2023.x/spring-cloud-alibaba-starters)
+* [spring-cloud-alibaba 版本依赖说明](https://github.com/alibaba/spring-cloud-alibaba/wiki/版本说明)
 # 部署sentinel控制台
 * [文档参考](https://sentinelguard.io/zh-cn/docs/dashboard.html)
 ```
