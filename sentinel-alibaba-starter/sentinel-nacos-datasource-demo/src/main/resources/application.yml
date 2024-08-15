@@ -1,0 +1,23 @@
+server:
+  port: 8085
+spring:
+  main:
+    allow-circular-references: true
+  application:
+    name: sentinel-nacos-starter-datasource-demo
+  cloud:
+    sentinel:
+      eager: true
+      transport:
+        dashboard: 127.0.0.1:8080
+      datasource:
+        flow-rule:
+          nacos:
+            data-id: ${spring.application.name}-flow-rules
+            data-type: json
+            group-id: SENTINEL_GROUP
+            server-addr: 127.0.0.1:8848
+            rule-type: flow
+
+
+

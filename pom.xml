@@ -19,6 +19,7 @@
        <module>sentinel-app1-demo</module>
        <module>sentinel-nacos-client-demo</module>
        <module>sentinel-cluster-demo</module>
+       <module>sentinel-alibaba-starter</module>
    </modules>
 
 </project>
