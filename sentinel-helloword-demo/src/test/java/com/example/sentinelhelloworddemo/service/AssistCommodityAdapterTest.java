@@ -1,6 +1,7 @@
 package com.example.sentinelhelloworddemo.service;
 
 import com.alibaba.csp.sentinel.Entry;
+import com.alibaba.csp.sentinel.EntryType;
 import com.alibaba.csp.sentinel.SphU;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.csp.sentinel.slots.block.RuleConstant;
@@ -11,6 +12,9 @@ import com.alibaba.csp.sentinel.slots.block.degrade.circuitbreaker.CircuitBreake
 import com.alibaba.csp.sentinel.slots.block.degrade.circuitbreaker.EventObserverRegistry;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
+import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowItem;
+import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowRule;
+import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowRuleManager;
 import com.alibaba.csp.sentinel.slots.system.SystemRule;
 import com.alibaba.csp.sentinel.slots.system.SystemRuleManager;
 import com.alibaba.csp.sentinel.util.TimeUtil;
@@ -64,39 +68,57 @@ public class AssistCommodityAdapterTest {
         }
     }
 
-    /**
-     * 模拟熔断降级
-     * 经过测试熔断降级只会对请求做统计，而不会主动结束线程，比如设置5秒钟为慢请求，执行了10秒，需要等待10秒执行完，进行统计
-     * 如果瞬时流量瞬间增加，则会阻塞等待,调用第三方需要设置合理的超时时间
-     * @throws InterruptedException
-     */
-    @Test
-    public void degradeRule_TEST() throws InterruptedException {
-        initDegradeRule();
-        AssistCommodityQueryApi mockAssistCommodityQueryApi = new MockAssistCommodityQueryApiImpl();
-        Whitebox.setInternalState(adapter, "assistCommodityQueryApi",
-            mockAssistCommodityQueryApi);
-        //模拟5个线程并发调用
-        int concurrency = 5;
-        List<Thread> tasks = new ArrayList<>();
-        for (int i = 0; i < concurrency; i++) {
-            Thread entryThread = new Thread(() -> {
-                while (true) {
-                    try {
-                        adapter.queryCommoditySale(null);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            });
-            entryThread.setName("sentinel-simulate-traffic-task-" + i);
-            entryThread.start();
-            tasks.add(entryThread);
-        }
-        for (Thread task : tasks) {
-            task.join();
+    public void testParamFlowRules() throws IOException {
+        Entry entry = null;
+        try {
+            entry = SphU.entry("paramFlowRules", EntryType.IN, 1, "paramA", "paramB");
+            // Your logic here.
+        } catch (BlockException ex) {
+            // 处理被流控的逻辑
+            System.out.println("blocked!");
+        } finally {
+            if (entry != null) {
+                entry.exit(1, "paramA", "paramB");
+            }
         }
     }
+
+        /**
+         * 模拟熔断降级
+         * 经过测试熔断降级只会对请求做统计，而不会主动结束线程，比如设置5秒钟为慢请求，执行了10秒，需要等待10秒执行完，进行统计
+         * 如果瞬时流量瞬间增加，则会阻塞等待,调用第三方需要设置合理的超时时间
+         * @throws InterruptedException
+         */
+        @Test
+        public void degradeRule_TEST () throws InterruptedException {
+            initDegradeRule();
+            AssistCommodityQueryApi mockAssistCommodityQueryApi = new MockAssistCommodityQueryApiImpl();
+            Whitebox.setInternalState(adapter, "assistCommodityQueryApi",
+                mockAssistCommodityQueryApi);
+            //模拟5个线程并发调用
+            int concurrency = 5;
+            List<Thread> tasks = new ArrayList<>();
+            for (int i = 0; i < concurrency; i++) {
+                Thread entryThread = new Thread(() -> {
+                    while (true) {
+                        try {
+                            adapter.queryCommoditySale(null);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+                entryThread.setName("sentinel-simulate-traffic-task-" + i);
+                entryThread.start();
+                tasks.add(entryThread);
+            }
+            for (Thread task : tasks) {
+                task.join();
+            }
+        }
+
+
+
 
     
     /**
@@ -147,6 +169,20 @@ public class AssistCommodityAdapterTest {
                         TimeUtil.currentTimeMillis()));
                 }
             });
+    }
+
+    public void initParamFlowRules() throws IOException {
+
+        ParamFlowRule rule = new ParamFlowRule("paramFlowRules")
+            .setParamIdx(0)
+            .setCount(5);
+        // 针对 int 类型的参数 PARAM_B，单独设置限流 QPS 阈值为 10，而不是全局的阈值 5.
+        ParamFlowItem item = new ParamFlowItem().setObject(String.valueOf("210005"))
+            .setClassType(int.class.getName())
+            .setCount(10);
+        rule.setParamFlowItemList(Collections.singletonList(item));
+
+        ParamFlowRuleManager.loadRules(Collections.singletonList(rule));
     }
 
 }

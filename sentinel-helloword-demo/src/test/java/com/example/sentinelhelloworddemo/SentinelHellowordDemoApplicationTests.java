@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import javax.annotation.Resource;
-import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.powermock.reflect.Whitebox;
 import org.springframework.boot.SpringApplication;

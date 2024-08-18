@@ -52,5 +52,11 @@ public class UserServiceImpl implements UserService {
         return Collections.singletonList(user);
     }
 
+    @SentinelResource("flowRuleRelationQuery")
+    @Override
+    public void flowRuleRelationQuery(){
+
+    }
+
 
 }

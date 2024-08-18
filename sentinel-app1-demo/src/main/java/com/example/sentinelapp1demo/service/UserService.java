@@ -11,4 +11,5 @@ public interface UserService{
      User findByUser(Long userId);
 
      List<User> listByUserName(String userName);
+     public void flowRuleRelationQuery();
 }
