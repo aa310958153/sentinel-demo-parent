@@ -16,10 +16,12 @@
 
 package com.example.sentinelnacosdatasourcedemo.web;
 
+import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowArgument;
+
 /**
  * @author <a href="mailto:chenxilzx1@gmail.com">theonefx</a>
  */
-public class User {
+public class User  implements ParamFlowArgument {
 
     private String name;
 
@@ -39,5 +41,10 @@ public class User {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    @Override
+    public Object paramFlowKey() {
+        return name;
     }
 }

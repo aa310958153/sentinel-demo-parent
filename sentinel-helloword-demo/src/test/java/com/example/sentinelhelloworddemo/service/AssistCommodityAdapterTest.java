@@ -5,6 +5,8 @@ import com.alibaba.csp.sentinel.EntryType;
 import com.alibaba.csp.sentinel.SphU;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.csp.sentinel.slots.block.RuleConstant;
+import com.alibaba.csp.sentinel.slots.block.authority.AuthorityRule;
+import com.alibaba.csp.sentinel.slots.block.authority.AuthorityRuleManager;
 import com.alibaba.csp.sentinel.slots.block.degrade.DegradeRule;
 import com.alibaba.csp.sentinel.slots.block.degrade.DegradeRuleManager;
 import com.alibaba.csp.sentinel.slots.block.degrade.circuitbreaker.CircuitBreaker.State;
@@ -171,6 +173,11 @@ public class AssistCommodityAdapterTest {
             });
     }
 
+    /**
+     * com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowSlot#checkFlow
+     * 默认是string.valueof
+     * @throws IOException
+     */
     public void initParamFlowRules() throws IOException {
 
         ParamFlowRule rule = new ParamFlowRule("paramFlowRules")
@@ -184,5 +191,16 @@ public class AssistCommodityAdapterTest {
 
         ParamFlowRuleManager.loadRules(Collections.singletonList(rule));
     }
-
+    /**
+     * 资源应用仅允许appA,appB访问
+     * 调用方信息通过 ContextUtil.enter(resourceName, origin) 方法中的 origin 参数传入。
+     * ContextUtil.enter(resourceName, origin)
+     */
+    public void intAuthorityRule(){
+        AuthorityRule rule = new AuthorityRule();
+        rule.setResource("test");
+        rule.setStrategy(RuleConstant.AUTHORITY_WHITE);
+        rule.setLimitApp("appA,appB");
+        AuthorityRuleManager.loadRules(Collections.singletonList(rule));
+    }
 }

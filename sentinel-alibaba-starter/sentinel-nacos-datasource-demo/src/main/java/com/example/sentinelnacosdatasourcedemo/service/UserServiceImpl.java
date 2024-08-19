@@ -2,6 +2,7 @@ package com.example.sentinelnacosdatasourcedemo.service;
 
 import com.alibaba.csp.sentinel.Entry;
 import com.alibaba.csp.sentinel.SphU;
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowException;
 import com.example.sentinelnacosdatasourcedemo.web.User;
@@ -48,6 +49,18 @@ public class UserServiceImpl implements UserService {
         user.setAge(13);
         user.setName("李强");
         return Collections.singletonList(user);
+    }
+
+    @SentinelResource("flowRuleRelationQuery")
+    @Override
+    public void flowRuleRelationQuery() {
+
+    }
+
+    @Override
+    @SentinelResource("flowRuleChain")
+    public void flowRuleChain() {
+
     }
 
 
