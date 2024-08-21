@@ -1,14 +1,12 @@
 package com.example.sentinelnacosdatasourcedemo.web;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
-import com.alibaba.csp.sentinel.slots.block.RuleConstant;
-import com.alibaba.csp.sentinel.slots.block.authority.AuthorityRule;
-import com.alibaba.csp.sentinel.slots.block.authority.AuthorityRuleManager;
-import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowArgument;
 import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowItem;
 import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowRule;
 import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowRuleManager;
 import com.example.sentinelnacosdatasourcedemo.service.UserService;
+import com.example.sentinelnacosdatasourcedemosdk.Student;
+import com.example.sentinelnacosdatasourcedemosdk.StudentOpenApi;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,6 +29,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class SentinelBlockTestController implements ApplicationRunner {
 
+    @Resource
+    StudentOpenApi studentOpenApi;
     @Resource
     UserService userService;
 
@@ -139,6 +139,7 @@ public class SentinelBlockTestController implements ApplicationRunner {
 
     /**
      * com.example.sentinelnacosdatasourcedemo.config.CustomRequestOriginParser
+     *
      * @return
      */
     @RequestMapping("/authority-rule")
@@ -146,6 +147,28 @@ public class SentinelBlockTestController implements ApplicationRunner {
     public Map<String, Object> authorityRule() {
         return getResData();
     }
+
+    @RequestMapping("/system-rule-rq")
+    @ResponseBody
+    public Map<String, Object> systemRuleRt() {
+        return getResData();
+    }
+
+    @RequestMapping("/system-rule-rt")
+    @ResponseBody
+    public Map<String, Object> systemRuleRt(@RequestParam(value = "seconds", required = false) Integer seconds)
+        throws InterruptedException {
+        Thread.sleep(seconds);
+        return getResData();
+    }
+
+    @RequestMapping("/feign-rule-rq")
+    @ResponseBody
+    public Student feginRuleRq()
+        throws InterruptedException {
+        return studentOpenApi.getStudent("测试");
+    }
+
 
     private Map<String, Object> getResData() {
         Map<String, Object> resData = new HashMap<>();
@@ -163,8 +186,8 @@ public class SentinelBlockTestController implements ApplicationRunner {
     }
 
     /**
-     * com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowSlot#checkFlow 默认是string.valueof
-     *  dashborad有bug先写死
+     * com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowSlot#checkFlow 默认是string.valueof dashborad有bug先写死
+     *
      * @throws IOException
      */
     public void initParamFlowRules() throws IOException {

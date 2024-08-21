@@ -25,31 +25,36 @@ public class CustomBlockExceptionHandler implements BlockExceptionHandler {
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlockException e)
         throws Exception {
-        Map<String, Object> resData=new HashMap<>();
+        Map<String, Object> resData = new HashMap<>();
         if (e instanceof FlowException) {
-            resData.put("status",100);
-            resData.put("msg","触发限流规则|"+Thread.currentThread().getId()+"|"+ DateFormatUtils.format(System.currentTimeMillis()
+            resData.put("status", 100);
+            resData.put("msg", "触发限流规则|" + Thread.currentThread().getId() + "|" + DateFormatUtils.format(
+                System.currentTimeMillis()
                 , "yyyy-MM-dd HH:mm:ss:SSS"));
 
         } else if (e instanceof DegradeException) {
-            resData.put("status",101);
-            resData.put("msg","降级了|" +Thread.currentThread().getId()+"|"+ DateFormatUtils.format(System.currentTimeMillis()
-                , "yyyy-MM-dd HH:mm:ss:SSS")
-);
+            resData.put("status", 101);
+            resData.put("msg",
+                "降级了|" + Thread.currentThread().getId() + "|" + DateFormatUtils.format(System.currentTimeMillis()
+                    , "yyyy-MM-dd HH:mm:ss:SSS")
+            );
 
         } else if (e instanceof ParamFlowException) {
-            resData.put("status",102);
-            resData.put("msg","热点参数限流"+Thread.currentThread().getId()+"|"+ DateFormatUtils.format(System.currentTimeMillis()
+            resData.put("status", 102);
+            resData.put("msg", "热点参数限流" + Thread.currentThread().getId() + "|" + DateFormatUtils.format(
+                System.currentTimeMillis()
                 , "yyyy-MM-dd HH:mm:ss:SSS")
-);
+            );
         } else if (e instanceof SystemBlockException) {
-            resData.put("status",103);
-            resData.put("msg","系统规则（负载/...不满足要求"+Thread.currentThread().getId()+"|"+ DateFormatUtils.format(System.currentTimeMillis()
-                , "yyyy-MM-dd HH:mm:ss:SSS")
-);
+            resData.put("status", 103);
+            resData.put("msg",
+                "系统规则（负载/...不满足要求" + Thread.currentThread().getId() + "|" + DateFormatUtils.format(
+                    System.currentTimeMillis()
+                    , "yyyy-MM-dd HH:mm:ss:SSS")
+            );
         } else if (e instanceof AuthorityException) {
-            resData.put("status",104);
-            resData.put("msg","授权规则不通过"+Thread.currentThread().getId());
+            resData.put("status", 104);
+            resData.put("msg", "授权规则不通过" + Thread.currentThread().getId());
         }
         // http状态码
         httpServletResponse.setStatus(500);
@@ -62,4 +67,5 @@ public class CustomBlockExceptionHandler implements BlockExceptionHandler {
                 resData
             );
     }
+
 }
