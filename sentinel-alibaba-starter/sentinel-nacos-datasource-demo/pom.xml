@@ -57,6 +57,7 @@
             <groupId>com.alibaba.cloud</groupId>
             <version>2.1.3.RELEASE</version>
         </dependency>
+        <!--nacos持久化-->
         <dependency>
             <artifactId>sentinel-datasource-nacos</artifactId>
             <groupId>com.alibaba.csp</groupId>
