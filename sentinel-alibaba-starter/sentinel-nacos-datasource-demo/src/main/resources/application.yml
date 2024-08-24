@@ -5,7 +5,7 @@ spring:
   main:
     allow-circular-references: true
   application:
-    name: sentinel-nacos-starter-datasource-demo
+    name: assist-task
   cloud:
     nacos:
       discovery.server-addr: 127.0.0.1:8848
@@ -20,35 +20,35 @@ spring:
         flow-rule:
           nacos:
             #流控规则的nacos配置文件 dashbard上报推送的是这个格式
-            data-id: ${spring.application.name}-flow-rules
+            data-id: ${spring.application.name}-flow-rules.json
             #流控规则格式 XML OR JSON dashbard配置的json
             data-type: json
-            namespace: 04415d0c-9d8e-4e32-81a7-c0d737bb0063
+            namespace: f981fdb6-c9f2-455e-814e-c48bf33ced62
             group-id: SENTINEL_GROUP
             server-addr: 127.0.0.1:8848
             #规则类型控制规则更新的策略
             rule-type: flow
         param-flow-rule:
           nacos:
-            data-id: ${spring.application.name}-param-rules
+            data-id: ${spring.application.name}-param-rules.json
             data-type: json
-            namespace: 04415d0c-9d8e-4e32-81a7-c0d737bb0063
+            namespace: f981fdb6-c9f2-455e-814e-c48bf33ced62
             group-id: SENTINEL_GROUP
             server-addr: 127.0.0.1:8848
             rule-type: param-flow
         authority-rule:
           nacos:
-            data-id: ${spring.application.name}-authority-rules
+            data-id: ${spring.application.name}-authority-rules.json
             data-type: json
-            namespace: 04415d0c-9d8e-4e32-81a7-c0d737bb0063
+            namespace: f981fdb6-c9f2-455e-814e-c48bf33ced62
             group-id: SENTINEL_GROUP
             server-addr: 127.0.0.1:8848
             rule-type: authority
         system-rule:
           nacos:
-            data-id: ${spring.application.name}-system-rules
+            data-id: ${spring.application.name}-system-rules.json
             data-type: json
-            namespace: 04415d0c-9d8e-4e32-81a7-c0d737bb0063
+            namespace: f981fdb6-c9f2-455e-814e-c48bf33ced62
             group-id: SENTINEL_GROUP
             server-addr: 127.0.0.1:8848
             rule-type: system

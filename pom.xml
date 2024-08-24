@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <artifactId>sentinel-demo-parent</artifactId>
+    <description>sentinel-demo-parent</description>
+    <groupId>com.yxt</groupId>
+    <modelVersion>4.0.0</modelVersion>
+    <modules>
+        <module>sentinel-helloword-demo</module>
+        <module>sentinel-app1-demo</module>
+        <module>sentinel-nacos-client-demo</module>
+        <module>sentinel-cluster-demo</module>
+        <module>sentinel-alibaba-starter</module>
+        <module>yxt-sentinel-starter</module>
+        <module>sentinel-app2-yxt-starter-demo</module>
+    </modules>
+    <name>sentinel-demo-parent</name>
+    <packaging>pom</packaging>
     <parent>
-        <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.5.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>org.springframework.boot</groupId>
+        <relativePath/>
+        <version>2.1.5.RELEASE</version> <!-- lookup parent from repository -->
     </parent>
     <properties>
         <spring-boot.version>2.1.5.RELEASE</spring-boot.version>
     </properties>
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.yxt</groupId>
-    <artifactId>sentinel-demo-parent</artifactId>
-    <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
-    <name>sentinel-demo-parent</name>
-    <description>sentinel-demo-parent</description>
-   <modules>
-       <module>sentinel-helloword-demo</module>
-       <module>sentinel-app1-demo</module>
-       <module>sentinel-nacos-client-demo</module>
-       <module>sentinel-cluster-demo</module>
-       <module>sentinel-alibaba-starter</module>
-   </modules>
 
 </project>
