@@ -20,5 +20,6 @@
 
     <modules>
         <module>sentinel-nacos-datasource-demo</module>
+       <module>sentinel-nacos-datasource-demo-provider</module>
     </modules>
 </project>

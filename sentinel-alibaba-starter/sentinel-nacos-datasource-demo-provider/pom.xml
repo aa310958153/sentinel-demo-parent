@@ -10,5 +10,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>sentinel-nacos-datasource-demo-server</module>
+        <module>sentinel-nacos-datasource-demo-sdk</module>
     </modules>
 </project>
