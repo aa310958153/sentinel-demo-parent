@@ -25,6 +25,12 @@
             <groupId>org.springframework.boot</groupId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-context</artifactId>
+            <version>2.1.1.RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
     <groupId>com.yxt</groupId>
     <modelVersion>4.0.0</modelVersion>

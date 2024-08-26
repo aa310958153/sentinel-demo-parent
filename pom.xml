@@ -11,8 +11,7 @@
         <module>sentinel-nacos-client-demo</module>
         <module>sentinel-cluster-demo</module>
         <module>sentinel-alibaba-starter</module>
-        <module>yxt-sentinel-starter</module>
-        <module>sentinel-app2-yxt-starter-demo</module>
+        <module>yxt-starter-test-root</module>
     </modules>
     <name>sentinel-demo-parent</name>
     <packaging>pom</packaging>

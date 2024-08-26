@@ -1,5 +1,6 @@
 package com.yxt.sentinel.starter;
 
+import com.yxt.sentinel.starter.locator.YxtSentinelPropertySourceLocator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
 public class YXTSentinelAutoConfiguration {
 
     @Bean
-    public TestBean testBean() {
-        return new TestBean();
+    public YxtSentinelPropertySourceLocator yxtSentinelPropertySourceLocator() {
+        return new YxtSentinelPropertySourceLocator();
     }
 
 }
