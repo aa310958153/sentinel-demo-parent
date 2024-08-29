@@ -1,0 +1,8 @@
+yxt:
+  sentinel:
+    transport:
+      dashboard: sentinel:8858
+    datasource:
+      namespace: 14e1cfa8-6d8b-4540-8634-2e2d04831aa7
+      group-id: SENTINEL_GROUP
+      server-addr: 69a6c2f1-2676-4f33-b4d8-8b88b1003634.nacos.cn-southwest-2.cse.myhuaweicloud.com.:8848

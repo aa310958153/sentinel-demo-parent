@@ -57,7 +57,7 @@ public class SentinelBlockTestController implements ApplicationRunner {
     @ResponseBody
     public Map<String, Object> flowRuleThread(@RequestParam(name = "name", defaultValue = "unknown user") String name)
         throws InterruptedException {
-        Thread.sleep(500);
+        Thread.sleep(5000);
         return getResData();
     }
 

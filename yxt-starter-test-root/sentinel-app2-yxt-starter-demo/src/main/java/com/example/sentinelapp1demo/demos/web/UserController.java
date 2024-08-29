@@ -18,12 +18,14 @@ package com.example.sentinelapp1demo.demos.web;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
+import com.example.sentinelapp1demo.config.FeignConfiguration;
+import com.example.sentinelapp1demo.config.FeignConfiguration2;
 import com.example.sentinelapp1demo.service.UserService;
+import com.yxt.starter.sentinel.annotation.YXTSentinel;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,24 +35,27 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author <a href="mailto:chenxilzx1@gmail.com">theonefx</a>
  */
 @Controller
+@YXTSentinel(configFallbackClass = UserControllerFallBack.class, configuration = FeignConfiguration2.class)
 public class UserController {
+
     @Resource
     private UserService userService;
+
 
     // http://127.0.0.1:8080/hello?name=lisi
     @RequestMapping("/helloSentinelResource")
     @ResponseBody
-    @SentinelResource(value = "helloQuery",blockHandler="blockHelloSentinelResource")
     public String helloSentinelResource(@RequestParam(name = "name", defaultValue = "unknown user") String name) {
-        return "Hello " + name;
+        return name;
     }
 
 
-    public String blockHelloSentinelResource( String name, BlockException blockException) {
+    public String blockHelloSentinelResource(String name, BlockException blockException) {
         return "我是降级返回";
     }
 
     @RequestMapping("/hello")
+    @YXTSentinel(configuration = FeignConfiguration.class)
     @ResponseBody
     public String hello2(@RequestParam(name = "name", defaultValue = "unknown user") String name) {
         return "Hello " + name;
@@ -59,24 +64,26 @@ public class UserController {
 
     @RequestMapping("/user/{id}")
     @ResponseBody
-    public User user(@PathVariable("id") Long id) {
+    public User user(@PathVariable("id") Long id) throws BlockException {
+
         return userService.findByUser(id);
     }
 
     @RequestMapping("/user")
     @ResponseBody
     @SentinelResource(blockHandler = "blockHandlerForQuery")
-    public List<User> query(@RequestParam(name ="name") String name) {
-        return userService.listByUserName(name)   ;
+    public List<User> query(@RequestParam(name = "name") String name) {
+        return userService.listByUserName(name);
     }
 
     /**
      * blockHandler 函数，原方法调用被限流/降级/系统保护的时候调用
+     *
      * @param name
      * @return
      */
-    public List<User> blockHandlerForQuery(@RequestParam(name ="name") String name) {
-        User user= new User();
+    public List<User> blockHandlerForQuery(@RequestParam(name = "name") String name) {
+        User user = new User();
         user.setAge(13);
         user.setName("我是降级返回");
         return Collections.singletonList(user);
@@ -96,10 +103,10 @@ public class UserController {
         return "index.html";
     }
 
-    @ModelAttribute
+   /* @ModelAttribute
     public void parseUser(@RequestParam(name = "name", defaultValue = "unknown user") String name
         , @RequestParam(name = "age", defaultValue = "12") Integer age, User user) {
         user.setName("zhangsan");
         user.setAge(18);
-    }
+    }*/
 }

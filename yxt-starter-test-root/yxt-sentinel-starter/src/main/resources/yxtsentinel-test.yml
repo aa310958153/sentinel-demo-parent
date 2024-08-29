@@ -1,8 +1,8 @@
 yxt:
   sentinel:
     transport:
-      dashboard: dev-sentinel.hxyxt.com
+      dashboard: test-sentinel.hxyxt.com
     datasource:
-      namespace: 13949598-55d3-46ac-b0e8-42a9c30a1601
+      namespace: 9a3c9b59-885b-4a31-87c0-0bdc33328a5d
       group-id: SENTINEL_GROUP
       server-addr: 10.4.3.210:8848

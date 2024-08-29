@@ -1,0 +1,49 @@
+spring:
+  cloud:
+    sentinel:
+      enabled: true
+      web-context-unify: false # 关闭context整合 避免链路失效 默认会由context为根链路
+      eager: true #启动立即加载规则，而不是懒加载
+      transport:
+        dashboard: pre-sentinel.hxyxt.com #dashboard地址
+        port: 8719 #dashboard通信端口，如果冲突则会自动+1 寻找可用端口
+        heartbeat-interval-ms: 5000 #心跳秒数
+      datasource:
+        flow-rule:
+          nacos:
+            #流控规则的nacos配置文件 dashbard上报推送的是这个格式
+            data-id: ${spring.application.name}-flow-rules.json
+            #流控规则格式 XML OR JSON dashbard配置的json
+            data-type: json
+            namespace: f981fdb6-c9f2-455e-814e-c48bf33ced62
+            group-id: SENTINEL_GROUP
+            server-addr: 127.0.0.1:8848
+            #规则类型控制规则更新的策略
+            rule-type: flow
+        param-flow-rule:
+          nacos:
+            data-id: ${spring.application.name}-param-rules.json
+            data-type: json
+            namespace: f981fdb6-c9f2-455e-814e-c48bf33ced62
+            group-id: SENTINEL_GROUP
+            server-addr: 127.0.0.1:8848
+            rule-type: param-flow
+        authority-rule:
+          nacos:
+            data-id: ${spring.application.name}-authority-rules.json
+            data-type: json
+            namespace: f981fdb6-c9f2-455e-814e-c48bf33ced62
+            group-id: SENTINEL_GROUP
+            server-addr: 127.0.0.1:8848
+            rule-type: authority
+        system-rule:
+          nacos:
+            data-id: ${spring.application.name}-system-rules.json
+            data-type: json
+            namespace: f981fdb6-c9f2-455e-814e-c48bf33ced62
+            group-id: SENTINEL_GROUP
+            server-addr: 127.0.0.1:8848
+            rule-type: system
+feign:
+  sentinel:
+    enabled: true

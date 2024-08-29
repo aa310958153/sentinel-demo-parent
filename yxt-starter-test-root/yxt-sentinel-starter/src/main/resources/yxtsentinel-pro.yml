@@ -1,0 +1,8 @@
+yxt:
+  sentinel:
+    transport:
+      dashboard: sentinel:8858
+    datasource:
+      namespace: 03ce2055-db1f-426a-9eb6-3b8e13de00e3
+      group-id: SENTINEL_GROUP
+      server-addr: sk-prod-nacos.nacos.cse.com:8848

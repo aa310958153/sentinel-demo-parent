@@ -1,2 +1,4 @@
-org.springframework.cloud.bootstrap.BootstrapConfiguration=\
-com.yxt.sentinel.starter.YXTSentinelAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.yxt.starter.sentinel.YXTSentinelAutoConfiguration
+org.springframework.boot.env.EnvironmentPostProcessor=\
+com.yxt.starter.sentinel.spring.env.YXTSentinelEnvironmentPostProcessor
