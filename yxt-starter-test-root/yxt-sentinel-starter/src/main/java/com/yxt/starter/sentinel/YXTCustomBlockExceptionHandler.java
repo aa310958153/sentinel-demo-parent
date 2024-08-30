@@ -21,8 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactoryUtils;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
+import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Lazy;
@@ -36,8 +35,8 @@ import org.springframework.web.servlet.HandlerMapping;
  * @Author liqiang
  * @Date 2024/8/17 10:09
  */
-public class YXTCustomBlockExceptionHandler implements BlockExceptionHandler, ApplicationRunner,
-    ApplicationContextAware {
+public class YXTCustomBlockExceptionHandler implements BlockExceptionHandler,
+    ApplicationContextAware, SmartInitializingSingleton {
 
     private static final Logger logger = LoggerFactory.getLogger(YXTCustomBlockExceptionHandler.class);
     @Resource
@@ -174,7 +173,12 @@ public class YXTCustomBlockExceptionHandler implements BlockExceptionHandler, Ap
     }
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
+
+    @Override
+    public void afterSingletonsInstantiated() {
         Map<String, HandlerMapping> matchingBeans =
             BeanFactoryUtils.beansOfTypeIncludingAncestors(applicationContext, HandlerMapping.class, true, false);
         if (!matchingBeans.isEmpty()) {
@@ -189,11 +193,5 @@ public class YXTCustomBlockExceptionHandler implements BlockExceptionHandler, Ap
             // We keep HandlerAdapters in sorted order.
             AnnotationAwareOrderComparator.sort(this.handlerAdapters);
         }
-        yxtSentinelContext.getContextNames();
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
     }
 }
