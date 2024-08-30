@@ -44,9 +44,7 @@ public class YXTCustomBlockExceptionHandler implements BlockExceptionHandler, Ap
     @Lazy
     private YXTSentinelContext yxtSentinelContext;
 
-    @Resource
     private List<HandlerMapping> handlerMappings;
-    @Resource
     private List<HandlerAdapter> handlerAdapters;
 
     private ApplicationContext applicationContext;
