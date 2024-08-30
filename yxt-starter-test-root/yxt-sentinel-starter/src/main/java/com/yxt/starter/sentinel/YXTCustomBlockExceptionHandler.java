@@ -9,6 +9,7 @@ import com.yxt.starter.sentinel.constants.YXTSentinelConstants;
 import com.yxt.starter.sentinel.context.YXTSentinelContext;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactoryUtils;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerAdapter;
 import org.springframework.web.servlet.HandlerExecutionChain;
@@ -28,18 +36,20 @@ import org.springframework.web.servlet.HandlerMapping;
  * @Author liqiang
  * @Date 2024/8/17 10:09
  */
-public class YXTCustomBlockExceptionHandler implements BlockExceptionHandler {
+public class YXTCustomBlockExceptionHandler implements BlockExceptionHandler, ApplicationRunner,
+    ApplicationContextAware {
 
     private static final Logger logger = LoggerFactory.getLogger(YXTCustomBlockExceptionHandler.class);
     @Resource
     @Lazy
     private YXTSentinelContext yxtSentinelContext;
-    @Lazy
+
     @Resource
     private List<HandlerMapping> handlerMappings;
-    @Lazy
     @Resource
     private List<HandlerAdapter> handlerAdapters;
+
+    private ApplicationContext applicationContext;
 
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
@@ -110,6 +120,7 @@ public class YXTCustomBlockExceptionHandler implements BlockExceptionHandler {
             if (annotation == null) {
                 return Optional.empty();
             }
+
             Object instance = yxtSentinelContext.getInstance(YXTSentinelConstants.CONTEXT_NAME,
                 annotation.configFallbackClass());
             Method declaredMethodFor = getDeclaredMethodFor(annotation.configFallbackClass(),
@@ -162,5 +173,29 @@ public class YXTCustomBlockExceptionHandler implements BlockExceptionHandler {
             }
         }
         return null;
+    }
+
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        Map<String, HandlerMapping> matchingBeans =
+            BeanFactoryUtils.beansOfTypeIncludingAncestors(applicationContext, HandlerMapping.class, true, false);
+        if (!matchingBeans.isEmpty()) {
+            this.handlerMappings = new ArrayList<>(matchingBeans.values());
+            // We keep HandlerMappings in sorted order.
+            AnnotationAwareOrderComparator.sort(this.handlerMappings);
+        }
+        Map<String, HandlerAdapter> matchingAdapterBeans =
+            BeanFactoryUtils.beansOfTypeIncludingAncestors(applicationContext, HandlerAdapter.class, true, false);
+        if (!matchingAdapterBeans.isEmpty()) {
+            this.handlerAdapters = new ArrayList<>(matchingAdapterBeans.values());
+            // We keep HandlerAdapters in sorted order.
+            AnnotationAwareOrderComparator.sort(this.handlerAdapters);
+        }
+        yxtSentinelContext.getContextNames();
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }

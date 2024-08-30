@@ -1,6 +1,5 @@
 package com.example.sentinelapp1demo.config;
 
-import com.example.sentinelapp1demo.demos.web.StudentFallback;
 import com.example.sentinelapp1demo.service.UserServiceImplFallback;
 import org.springframework.context.annotation.Bean;
 
@@ -15,8 +14,4 @@ public class FeignConfiguration {
         return new UserServiceImplFallback();
     }
 
-    @Bean
-    public StudentFallback studentFallback() {
-        return new StudentFallback();
-    }
 }

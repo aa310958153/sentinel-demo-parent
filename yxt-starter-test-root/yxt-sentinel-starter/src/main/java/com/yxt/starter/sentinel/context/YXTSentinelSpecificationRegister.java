@@ -1,6 +1,7 @@
 package com.yxt.starter.sentinel.context;
 
 import com.yxt.starter.sentinel.annotation.YXTSentinel;
+import com.yxt.starter.sentinel.constants.YXTSentinelConstants;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +24,6 @@ public class YXTSentinelSpecificationRegister implements BeanPostProcessor {
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        if (!isYXTSentinelHandle(bean)) {
-            return bean;
-        }
         registerClassYXTSentinelSpecification(bean);
         registerMethodYXTSentinelSpecification(bean);
         return bean;
@@ -41,18 +39,17 @@ public class YXTSentinelSpecificationRegister implements BeanPostProcessor {
             return;
         }
         YXTSentinelSpecification yxtSentinelSpecification = new YXTSentinelSpecification();
-        yxtSentinelSpecification.setName("YXTSentinelContext");
+        yxtSentinelSpecification.setName(YXTSentinelConstants.CONTEXT_NAME);
         yxtSentinelSpecification.setConfiguration(configurationArr);
         yxtSentinelSpecificationList.add(yxtSentinelSpecification);
     }
 
     public void registerMethodYXTSentinelSpecification(Object bean) {
-
         Class<?> userType = bean.getClass();
         Map<Method, YXTSentinel> methods = MethodIntrospector.selectMethods(bean.getClass(),
             (MethodIntrospector.MetadataLookup<YXTSentinel>) method -> {
                 try {
-                    return getYXTSentinelForMethod(method, userType);
+                    return getYXTSentinelForMethod(method);
                 } catch (Throwable ex) {
                     throw new IllegalStateException("Invalid YXTSentinel on handler class [" +
                         userType.getName() + "]: " + method, ex);
@@ -63,7 +60,7 @@ public class YXTSentinelSpecificationRegister implements BeanPostProcessor {
             if (yxtSentinel != null && yxtSentinel.configuration() != null
                 && yxtSentinel.configuration().length > 0) {
                 YXTSentinelSpecification yxtSentinelSpecification = new YXTSentinelSpecification();
-                yxtSentinelSpecification.setName("YXTSentinelContext");
+                yxtSentinelSpecification.setName(YXTSentinelConstants.CONTEXT_NAME);
                 yxtSentinelSpecification.setConfiguration(yxtSentinel.configuration());
                 yxtSentinelSpecificationList.add(yxtSentinelSpecification);
             }
@@ -73,7 +70,7 @@ public class YXTSentinelSpecificationRegister implements BeanPostProcessor {
     }
 
 
-    private YXTSentinel getYXTSentinelForMethod(Method method, Class<?> handlerType) {
+    private YXTSentinel getYXTSentinelForMethod(Method method) {
         return AnnotatedElementUtils.findMergedAnnotation(method, YXTSentinel.class);
 
     }
