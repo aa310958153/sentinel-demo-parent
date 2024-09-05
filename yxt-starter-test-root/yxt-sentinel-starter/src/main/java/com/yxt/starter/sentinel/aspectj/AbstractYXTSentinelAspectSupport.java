@@ -142,9 +142,10 @@ public abstract class AbstractYXTSentinelAspectSupport {
         throw ex;
     }
 
+
     protected Object handleBlockException(ProceedingJoinPoint pjp, YXTSentinel annotation, BlockException ex)
         throws Throwable {
-        if (annotation.configFallbackClass() != null) {
+        if (void.class != annotation.configFallbackClass() && annotation.configFallbackClass() != null) {
             return handleConfigFallback(pjp, annotation);
         }
         // Execute block handler if configured.
@@ -195,13 +196,13 @@ public abstract class AbstractYXTSentinelAspectSupport {
         }
         boolean mustStatic = locationClass != null && locationClass.length >= 1;
         Class<?> clazz = mustStatic ? locationClass[0] : pjp.getTarget().getClass();
-        MethodWrapper m = YxtSentinelMetadataRegistry.lookupFallback(clazz,
+        MethodWrapper m = YXTSentinelMetadataRegistry.lookupFallback(clazz,
             fallbackName);
         if (m == null) {
             // First time, resolve the fallback.
             Method method = resolveFallbackInternal(pjp, fallbackName, clazz, mustStatic);
             // Cache the method instance.
-            YxtSentinelMetadataRegistry.updateFallbackFor(clazz, fallbackName, method);
+            YXTSentinelMetadataRegistry.updateFallbackFor(clazz, fallbackName, method);
             return method;
         }
         if (!m.isPresent()) {
@@ -226,7 +227,7 @@ public abstract class AbstractYXTSentinelAspectSupport {
         boolean mustStatic = locationClass != null && locationClass.length >= 1;
         Class<?> clazz = mustStatic ? locationClass[0] : pjp.getTarget().getClass();
 
-        MethodWrapper m = YxtSentinelMetadataRegistry.lookupDefaultFallback(clazz, defaultFallback);
+        MethodWrapper m = YXTSentinelMetadataRegistry.lookupDefaultFallback(clazz, defaultFallback);
         if (m == null) {
             // First time, resolve the default fallback.
             Class<?> originReturnType = resolveMethod(pjp).getReturnType();
@@ -242,7 +243,7 @@ public abstract class AbstractYXTSentinelAspectSupport {
                 method = findMethod(mustStatic, clazz, defaultFallback, originReturnType, paramTypeWithException);
             }
             // Cache the method instance.
-            YxtSentinelMetadataRegistry.updateDefaultFallbackFor(clazz, defaultFallback, method);
+            YXTSentinelMetadataRegistry.updateDefaultFallbackFor(clazz, defaultFallback, method);
             return method;
         }
         if (!m.isPresent()) {
@@ -280,13 +281,13 @@ public abstract class AbstractYXTSentinelAspectSupport {
             // By default current class.
             clazz = pjp.getTarget().getClass();
         }
-        MethodWrapper m = YxtSentinelMetadataRegistry.lookupBlockHandler(clazz,
+        MethodWrapper m = YXTSentinelMetadataRegistry.lookupBlockHandler(clazz,
             name);
         if (m == null) {
             // First time, resolve the block handler.
             Method method = resolveBlockHandlerInternal(pjp, name, clazz, mustStatic);
             // Cache the method instance.
-            YxtSentinelMetadataRegistry.updateBlockHandlerFor(clazz, name, method);
+            YXTSentinelMetadataRegistry.updateBlockHandlerFor(clazz, name, method);
             return method;
         }
         if (!m.isPresent()) {

@@ -37,7 +37,7 @@ public class YXTSentinelAspect extends AbstractYXTSentinelAspectSupport {
     public void yxtSentinelAnnotationPointcut() {
     }
 
-    @Around("yxtSentinelAnnotationPointcut()")
+    Around("yxtSentinelAnnotationPointcut()")
     public Object invokeResourceWithSentinel(ProceedingJoinPoint pjp) throws Throwable {
         Method originMethod = resolveMethod(pjp);
 
@@ -47,14 +47,15 @@ public class YXTSentinelAspect extends AbstractYXTSentinelAspectSupport {
             annotation = targetClass.getAnnotation(YXTSentinel.class);
         }
         if (annotation == null) {
-            throw new IllegalStateException("Wrong state for YXTSentinel annotation");
+            throw new IllegalStateException("Wrong state for YxtSentinel annotation");
         }
-        String resourceName = getResourceName(annotation.value(), originMethod);
+
         EntryType entryType = annotation.entryType();
         int resourceType = annotation.resourceType();
         Entry entry = null;
         try {
             if (annotation.shouldReportResource()) {
+                String resourceName = getResourceName(annotation.value(), originMethod);
                 entry = SphU.entry(resourceName, resourceType, entryType, pjp.getArgs());
             }
             return pjp.proceed();

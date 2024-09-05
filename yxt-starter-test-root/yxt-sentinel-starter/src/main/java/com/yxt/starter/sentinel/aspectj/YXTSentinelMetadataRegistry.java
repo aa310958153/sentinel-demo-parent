@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-public final class YxtSentinelMetadataRegistry {
+public final class YXTSentinelMetadataRegistry {
 
     private static final Map<String, MethodWrapper> FALLBACK_MAP = new ConcurrentHashMap<>();
     private static final Map<String, MethodWrapper> DEFAULT_FALLBACK_MAP = new ConcurrentHashMap<>();
