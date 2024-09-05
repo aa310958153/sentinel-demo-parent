@@ -5,15 +5,19 @@ import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.csp.sentinel.slots.block.authority.AuthorityException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yxt.starter.sentinel.annotation.YXTSentinel;
+import com.yxt.starter.sentinel.aspectj.MethodWrapper;
+import com.yxt.starter.sentinel.aspectj.YXTSentinelMetadataRegistry;
 import com.yxt.starter.sentinel.constants.YXTSentinelConstants;
 import com.yxt.starter.sentinel.context.YXTSentinelContext;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -118,15 +122,13 @@ public class YXTCustomBlockExceptionHandler implements BlockExceptionHandler,
                 return Optional.empty();
             }
 
-            Object instance = yxtSentinelContext.getInstance(YXTSentinelConstants.CONTEXT_NAME,
+            Object fallbackObject = yxtSentinelContext.getInstance(YXTSentinelConstants.CONTEXT_NAME,
                 annotation.configFallbackClass());
-            Method declaredMethodFor = getDeclaredMethodFor(annotation.configFallbackClass(),
-                handlerMethod.getMethod().getName(),
-                handlerMethod.getMethod().getParameterTypes());
-            if (declaredMethodFor == null) {
+            MethodWrapper methodWrapper = getMethodWrapper(annotation, handlerMethod);
+            if (methodWrapper == null) {
                 return Optional.empty();
             }
-            HandlerMethod fallbackHandler = new HandlerMethod(instance, declaredMethodFor);
+            HandlerMethod fallbackHandler = new HandlerMethod(fallbackObject, methodWrapper.getMethod());
             HandlerExecutionChain handlerExecutionChain = new HandlerExecutionChain(fallbackHandler);
             return Optional.of(handlerExecutionChain);
         } catch (Exception e) {
@@ -135,6 +137,42 @@ public class YXTCustomBlockExceptionHandler implements BlockExceptionHandler,
             return Optional.empty();
         }
 
+    }
+
+    /**
+     * 避免大量无效反射
+     *
+     * @param annotation
+     * @param handlerMethod
+     * @return
+     */
+    private MethodWrapper getMethodWrapper(YXTSentinel annotation, HandlerMethod handlerMethod) {
+        MethodWrapper methodWrapper = YXTSentinelMetadataRegistry.lookupBlockHandler(
+            annotation.configFallbackClass(), handlerMethod.getMethod().getName(),
+            handlerMethod.getMethod().getParameterTypes());
+
+        if (methodWrapper != null) {
+            return methodWrapper;
+        }
+        String lockKey = String.format("%s.%s(%s)", annotation.configFallbackClass().getName(),
+            handlerMethod.getMethod().getName(),
+            Arrays.stream(handlerMethod.getMethod().getParameterTypes()).map(Class::getCanonicalName).collect(
+                Collectors.joining(",")));
+        synchronized (lockKey) {
+            methodWrapper = YXTSentinelMetadataRegistry.lookupBlockHandler(
+                annotation.configFallbackClass(), handlerMethod.getMethod().getName(),
+                handlerMethod.getMethod().getParameterTypes());
+            if (methodWrapper != null) {
+                return methodWrapper;
+            }
+            Method declaredMethodFor = getDeclaredMethodFor(annotation.configFallbackClass(),
+                handlerMethod.getMethod().getName(),
+                handlerMethod.getMethod().getParameterTypes());
+            YXTSentinelMetadataRegistry.updateBlockHandlerFor(annotation.configFallbackClass(),
+                handlerMethod.getMethod().getName(), handlerMethod.getMethod().getParameterTypes(), declaredMethodFor);
+            return YXTSentinelMetadataRegistry.lookupBlockHandler(annotation.configFallbackClass(),
+                handlerMethod.getMethod().getName(), handlerMethod.getMethod().getParameterTypes());
+        }
     }
 
     protected HandlerExecutionChain getHandler(HttpServletRequest request) throws Exception {

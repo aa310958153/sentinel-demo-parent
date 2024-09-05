@@ -17,8 +17,10 @@ package com.yxt.starter.sentinel.aspectj;
 
 import com.alibaba.csp.sentinel.util.StringUtil;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 
 public final class YXTSentinelMetadataRegistry {
@@ -27,18 +29,41 @@ public final class YXTSentinelMetadataRegistry {
     private static final Map<String, MethodWrapper> DEFAULT_FALLBACK_MAP = new ConcurrentHashMap<>();
     private static final Map<String, MethodWrapper> BLOCK_HANDLER_MAP = new ConcurrentHashMap<>();
 
+    /**
+     * @deprecated use {@link #lookupFallback(Class, String, Class[])}
+     */
+    @Deprecated
     static MethodWrapper lookupFallback(Class<?> clazz, String name) {
         return FALLBACK_MAP.get(getKey(clazz, name));
     }
 
-    static MethodWrapper lookupDefaultFallback(Class<?> clazz, String name) {
+    static MethodWrapper lookupFallback(Class<?> clazz, String name,
+        Class<?>[] parameterTypes) {
+        return FALLBACK_MAP.get(getKey(clazz, name, parameterTypes));
+    }
+
+    static MethodWrapper lookupDefaultFallback(Class<?> clazz,
+        String name) {
         return DEFAULT_FALLBACK_MAP.get(getKey(clazz, name));
     }
 
+    /**
+     * @deprecated use {@link #lookupBlockHandler(Class, String, Class[])}
+     */
+    @Deprecated
     static MethodWrapper lookupBlockHandler(Class<?> clazz, String name) {
         return BLOCK_HANDLER_MAP.get(getKey(clazz, name));
     }
 
+    public static MethodWrapper lookupBlockHandler(Class<?> clazz, String name,
+        Class<?>[] parameterTypes) {
+        return BLOCK_HANDLER_MAP.get(getKey(clazz, name, parameterTypes));
+    }
+
+    /**
+     * @deprecated use {@link #updateFallbackFor(Class, String, Class[], Method)}
+     */
+    @Deprecated
     static void updateFallbackFor(Class<?> clazz, String name, Method method) {
         if (clazz == null || StringUtil.isBlank(name)) {
             throw new IllegalArgumentException("Bad argument");
@@ -46,22 +71,55 @@ public final class YXTSentinelMetadataRegistry {
         FALLBACK_MAP.put(getKey(clazz, name), MethodWrapper.wrap(method));
     }
 
+    static void updateFallbackFor(Class<?> clazz, String handlerName, Class<?>[] parameterTypes, Method handlerMethod) {
+        if (clazz == null || StringUtil.isBlank(handlerName)) {
+            throw new IllegalArgumentException("Bad argument");
+        }
+        FALLBACK_MAP.put(getKey(clazz, handlerName, parameterTypes),
+            MethodWrapper.wrap(handlerMethod));
+    }
+
     static void updateDefaultFallbackFor(Class<?> clazz, String name, Method method) {
         if (clazz == null || StringUtil.isBlank(name)) {
             throw new IllegalArgumentException("Bad argument");
         }
-        DEFAULT_FALLBACK_MAP.put(getKey(clazz, name), MethodWrapper.wrap(method));
+        DEFAULT_FALLBACK_MAP.put(getKey(clazz, name),
+            MethodWrapper.wrap(method));
     }
 
+
+    /**
+     * @deprecated use {@link #updateBlockHandlerFor(Class, String, Class[], Method)}
+     */
+    @Deprecated
     static void updateBlockHandlerFor(Class<?> clazz, String name, Method method) {
         if (clazz == null || StringUtil.isBlank(name)) {
             throw new IllegalArgumentException("Bad argument");
         }
-        BLOCK_HANDLER_MAP.put(getKey(clazz, name), MethodWrapper.wrap(method));
+        BLOCK_HANDLER_MAP.put(getKey(clazz, name),
+            MethodWrapper.wrap(method));
+    }
+
+    public static void updateBlockHandlerFor(Class<?> clazz, String handlerName, Class<?>[] parameterTypes,
+        Method handlerMethod) {
+        if (clazz == null || StringUtil.isBlank(handlerName)) {
+            throw new IllegalArgumentException("Bad argument");
+        }
+        BLOCK_HANDLER_MAP.put(getKey(clazz, handlerName, parameterTypes),
+            MethodWrapper.wrap(handlerMethod));
     }
 
     private static String getKey(Class<?> clazz, String name) {
         return String.format("%s:%s", clazz.getCanonicalName(), name);
+    }
+
+    private static String getKey(Class<?> clazz, String name, Class<?>[] parameterTypes) {
+        return String.format(
+            "%s:%s;%s",
+            clazz.getCanonicalName(),
+            name,
+            Arrays.stream(parameterTypes).map(Class::getCanonicalName).collect(Collectors.joining(","))
+        );
     }
 
     /**

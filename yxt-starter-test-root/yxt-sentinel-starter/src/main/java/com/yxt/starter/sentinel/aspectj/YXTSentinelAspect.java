@@ -37,7 +37,7 @@ public class YXTSentinelAspect extends AbstractYXTSentinelAspectSupport {
     public void yxtSentinelAnnotationPointcut() {
     }
 
-    Around("yxtSentinelAnnotationPointcut()")
+    @Around("yxtSentinelAnnotationPointcut()")
     public Object invokeResourceWithSentinel(ProceedingJoinPoint pjp) throws Throwable {
         Method originMethod = resolveMethod(pjp);
 

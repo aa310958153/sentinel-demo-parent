@@ -42,14 +42,18 @@
     <groupId>com.yxt</groupId>
     <modelVersion>4.0.0</modelVersion>
     <name>yxt-sentinel-starter</name>
-
     <packaging>jar</packaging>
+
     <parent>
-        <artifactId>sentinel-demo-parent</artifactId>
-        <groupId>com.yxt</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <groupId>org.springframework.boot</groupId>
+        <relativePath/>
+        <version>2.1.5.RELEASE</version> <!-- lookup parent from repository -->
     </parent>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <version>0.0.1-SNAPSHOT</version>
+
 </project>

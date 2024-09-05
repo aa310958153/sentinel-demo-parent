@@ -41,7 +41,7 @@ public class MethodWrapper {
         return new MethodWrapper(null, false);
     }
 
-    Method getMethod() {
+    public Method getMethod() {
         return method;
     }
 
