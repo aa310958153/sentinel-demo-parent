@@ -1,6 +1,6 @@
 package com.yxt.starter.sentinel.context;
 
-import com.yxt.starter.sentinel.annotation.YXTSentinel;
+import com.yxt.starter.sentinel.annotation.YxtSentinel;
 import com.yxt.starter.sentinel.constants.YXTSentinelConstants;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class YXTSentinelSpecificationRegister implements BeanPostProcessor {
     }
 
     public void registerClassYXTSentinelSpecification(Object bean) {
-        YXTSentinel annotation = AnnotationUtils.getAnnotation(bean.getClass(), YXTSentinel.class);
+        YxtSentinel annotation = AnnotationUtils.getAnnotation(bean.getClass(), YxtSentinel.class);
         if (annotation == null) {
             return;
         }
@@ -46,8 +46,8 @@ public class YXTSentinelSpecificationRegister implements BeanPostProcessor {
 
     public void registerMethodYXTSentinelSpecification(Object bean) {
         Class<?> userType = bean.getClass();
-        Map<Method, YXTSentinel> methods = MethodIntrospector.selectMethods(bean.getClass(),
-            (MethodIntrospector.MetadataLookup<YXTSentinel>) method -> {
+        Map<Method, YxtSentinel> methods = MethodIntrospector.selectMethods(bean.getClass(),
+            (MethodIntrospector.MetadataLookup<YxtSentinel>) method -> {
                 try {
                     return getYXTSentinelForMethod(method);
                 } catch (Throwable ex) {
@@ -55,8 +55,8 @@ public class YXTSentinelSpecificationRegister implements BeanPostProcessor {
                         userType.getName() + "]: " + method, ex);
                 }
             });
-        for (Entry<Method, YXTSentinel> methodYXTSentinelEntry : methods.entrySet()) {
-            YXTSentinel yxtSentinel = methodYXTSentinelEntry.getValue();
+        for (Entry<Method, YxtSentinel> methodYXTSentinelEntry : methods.entrySet()) {
+            YxtSentinel yxtSentinel = methodYXTSentinelEntry.getValue();
             if (yxtSentinel != null && yxtSentinel.configuration() != null
                 && yxtSentinel.configuration().length > 0) {
                 YXTSentinelSpecification yxtSentinelSpecification = new YXTSentinelSpecification();
@@ -70,13 +70,13 @@ public class YXTSentinelSpecificationRegister implements BeanPostProcessor {
     }
 
 
-    private YXTSentinel getYXTSentinelForMethod(Method method) {
-        return AnnotatedElementUtils.findMergedAnnotation(method, YXTSentinel.class);
+    private YxtSentinel getYXTSentinelForMethod(Method method) {
+        return AnnotatedElementUtils.findMergedAnnotation(method, YxtSentinel.class);
 
     }
 
     private boolean isYXTSentinelHandle(Object bean) {
-        return (AnnotatedElementUtils.hasAnnotation(bean.getClass(), YXTSentinel.class));
+        return (AnnotatedElementUtils.hasAnnotation(bean.getClass(), YxtSentinel.class));
     }
 
     public List<YXTSentinelSpecification> getYxtSentinelSpecificationList() {

@@ -4,7 +4,7 @@ import com.alibaba.csp.sentinel.adapter.spring.webmvc.callback.BlockExceptionHan
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.csp.sentinel.slots.block.authority.AuthorityException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yxt.starter.sentinel.annotation.YXTSentinel;
+import com.yxt.starter.sentinel.annotation.YxtSentinel;
 import com.yxt.starter.sentinel.aspectj.MethodWrapper;
 import com.yxt.starter.sentinel.aspectj.YXTSentinelMetadataRegistry;
 import com.yxt.starter.sentinel.constants.YXTSentinelConstants;
@@ -113,10 +113,10 @@ public class YXTCustomBlockExceptionHandler implements BlockExceptionHandler,
                 return Optional.empty();
             }
             HandlerMethod handlerMethod = (HandlerMethod) handler;
-            YXTSentinel annotation = handlerMethod.getBeanType().getAnnotation(YXTSentinel.class);
+            YxtSentinel annotation = handlerMethod.getBeanType().getAnnotation(YxtSentinel.class);
             if (annotation == null) {
                 Class<?> targetClass = handlerMethod.getBeanType();
-                annotation = targetClass.getAnnotation(YXTSentinel.class);
+                annotation = targetClass.getAnnotation(YxtSentinel.class);
             }
             if (annotation == null) {
                 return Optional.empty();
@@ -146,7 +146,7 @@ public class YXTCustomBlockExceptionHandler implements BlockExceptionHandler,
      * @param handlerMethod
      * @return
      */
-    private MethodWrapper getMethodWrapper(YXTSentinel annotation, HandlerMethod handlerMethod) {
+    private MethodWrapper getMethodWrapper(YxtSentinel annotation, HandlerMethod handlerMethod) {
         MethodWrapper methodWrapper = YXTSentinelMetadataRegistry.lookupBlockHandler(
             annotation.configFallbackClass(), handlerMethod.getMethod().getName(),
             handlerMethod.getMethod().getParameterTypes());

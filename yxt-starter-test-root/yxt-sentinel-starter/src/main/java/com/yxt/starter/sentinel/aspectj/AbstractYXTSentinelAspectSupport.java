@@ -20,7 +20,7 @@ import com.alibaba.csp.sentinel.log.RecordLog;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.csp.sentinel.util.MethodUtil;
 import com.alibaba.csp.sentinel.util.StringUtil;
-import com.yxt.starter.sentinel.annotation.YXTSentinel;
+import com.yxt.starter.sentinel.annotation.YxtSentinel;
 import com.yxt.starter.sentinel.constants.YXTSentinelConstants;
 import com.yxt.starter.sentinel.context.YXTSentinelContext;
 import java.lang.reflect.InvocationTargetException;
@@ -45,7 +45,7 @@ public abstract class AbstractYXTSentinelAspectSupport {
         Tracer.trace(ex);
     }
 
-    protected void traceException(Throwable ex, YXTSentinel annotation) {
+    protected void traceException(Throwable ex, YxtSentinel annotation) {
         Class<? extends Throwable>[] exceptionsToIgnore = annotation.exceptionsToIgnore();
         // The ignore list will be checked first.
         if (exceptionsToIgnore.length > 0 && exceptionBelongsTo(ex, exceptionsToIgnore)) {
@@ -84,7 +84,7 @@ public abstract class AbstractYXTSentinelAspectSupport {
         return MethodUtil.resolveMethodName(method);
     }
 
-    protected Object handleFallback(ProceedingJoinPoint pjp, YXTSentinel annotation, Throwable ex)
+    protected Object handleFallback(ProceedingJoinPoint pjp, YxtSentinel annotation, Throwable ex)
         throws Throwable {
         return handleFallback(pjp, annotation.fallback(), annotation.defaultFallback(), annotation.fallbackClass(), ex);
     }
@@ -143,7 +143,7 @@ public abstract class AbstractYXTSentinelAspectSupport {
     }
 
 
-    protected Object handleBlockException(ProceedingJoinPoint pjp, YXTSentinel annotation, BlockException ex)
+    protected Object handleBlockException(ProceedingJoinPoint pjp, YxtSentinel annotation, BlockException ex)
         throws Throwable {
         if (void.class != annotation.configFallbackClass() && annotation.configFallbackClass() != null) {
             return handleConfigFallback(pjp, annotation);
@@ -171,7 +171,7 @@ public abstract class AbstractYXTSentinelAspectSupport {
         return handleFallback(pjp, annotation, ex);
     }
 
-    public Object handleConfigFallback(ProceedingJoinPoint point, YXTSentinel yxtSentinel)
+    public Object handleConfigFallback(ProceedingJoinPoint point, YxtSentinel yxtSentinel)
         throws InvocationTargetException, IllegalAccessException {
         if (yxtSentinel.configFallbackClass() != null) {
             Method method = resolveMethod(point);
@@ -214,7 +214,7 @@ public abstract class AbstractYXTSentinelAspectSupport {
     private Method extractDefaultFallbackMethod(ProceedingJoinPoint pjp, String defaultFallback,
         Class<?>[] locationClass) {
         if (StringUtil.isBlank(defaultFallback)) {
-            YXTSentinel annotationClass = pjp.getTarget().getClass().getAnnotation(YXTSentinel.class);
+            YxtSentinel annotationClass = pjp.getTarget().getClass().getAnnotation(YxtSentinel.class);
             if (annotationClass != null && StringUtil.isNotBlank(annotationClass.defaultFallback())) {
                 defaultFallback = annotationClass.defaultFallback();
                 if (locationClass == null || locationClass.length < 1) {

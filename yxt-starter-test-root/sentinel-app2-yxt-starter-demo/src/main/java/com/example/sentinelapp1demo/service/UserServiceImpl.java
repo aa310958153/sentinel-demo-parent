@@ -6,7 +6,7 @@ import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.example.sentinelapp1demo.config.FeignConfiguration;
 import com.example.sentinelapp1demo.demos.web.User;
-import com.yxt.starter.sentinel.annotation.YXTSentinel;
+import com.yxt.starter.sentinel.annotation.YxtSentinel;
 import java.util.Collections;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  * @Date 2024/7/31 17:59
  */
 @Service
-@YXTSentinel(fallbackClass = UserServiceImplFallback.class, configuration = FeignConfiguration.class)
+@YxtSentinel(fallbackClass = UserServiceImplFallback.class, configuration = FeignConfiguration.class)
 public class UserServiceImpl implements UserService {
 
     @Override

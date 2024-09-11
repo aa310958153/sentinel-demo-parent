@@ -21,7 +21,7 @@ import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.example.sentinelapp1demo.config.FeignConfiguration;
 import com.example.sentinelapp1demo.config.FeignConfiguration2;
 import com.example.sentinelapp1demo.service.UserService;
-import com.yxt.starter.sentinel.annotation.YXTSentinel;
+import com.yxt.starter.sentinel.annotation.YxtSentinel;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Resource;
@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author <a href="mailto:chenxilzx1@gmail.com">theonefx</a>
  */
 @Controller
-@YXTSentinel(configFallbackClass = UserControllerFallBack.class, configuration = FeignConfiguration2.class)
+@YxtSentinel(configFallbackClass = UserControllerFallBack.class, configuration = FeignConfiguration2.class)
 public class UserController {
 
     @Resource
@@ -55,7 +55,7 @@ public class UserController {
     }
 
     @RequestMapping("/hello")
-    @YXTSentinel(configuration = FeignConfiguration.class)
+    @YxtSentinel(configuration = FeignConfiguration.class)
     @ResponseBody
     public String hello2(@RequestParam(name = "name", defaultValue = "unknown user") String name) {
         return "Hello " + name;

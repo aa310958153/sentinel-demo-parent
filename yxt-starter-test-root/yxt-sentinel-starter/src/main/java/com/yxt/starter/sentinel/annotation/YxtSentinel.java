@@ -19,7 +19,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface YXTSentinel {
+public @interface YxtSentinel {
 
     /**
      * 是否上报资源

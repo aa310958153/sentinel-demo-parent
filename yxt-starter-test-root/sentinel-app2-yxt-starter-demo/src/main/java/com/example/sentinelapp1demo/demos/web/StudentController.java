@@ -1,7 +1,7 @@
 package com.example.sentinelapp1demo.demos.web;
 
 import com.example.sentinelapp1demo.opensdk.StudentControllerOpenApi;
-import com.yxt.starter.sentinel.annotation.YXTSentinel;
+import com.yxt.starter.sentinel.annotation.YxtSentinel;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Date 2024/8/29 15:07
  */
 @RestController
-@YXTSentinel(configFallbackClass = StudentFallback.class)
+@YxtSentinel(configFallbackClass = StudentFallback.class)
 public class StudentController implements StudentControllerOpenApi {
 
     @Override

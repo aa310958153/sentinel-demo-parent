@@ -19,7 +19,7 @@ import com.alibaba.csp.sentinel.Entry;
 import com.alibaba.csp.sentinel.EntryType;
 import com.alibaba.csp.sentinel.SphU;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
-import com.yxt.starter.sentinel.annotation.YXTSentinel;
+import com.yxt.starter.sentinel.annotation.YxtSentinel;
 import java.lang.reflect.Method;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -33,7 +33,7 @@ import org.aspectj.lang.annotation.Pointcut;
 public class YXTSentinelAspect extends AbstractYXTSentinelAspectSupport {
 
 
-    @Pointcut("@within(com.yxt.starter.sentinel.annotation.YXTSentinel)")
+    @Pointcut("@within(com.yxt.starter.sentinel.annotation.YxtSentinel)")
     public void yxtSentinelAnnotationPointcut() {
     }
 
@@ -41,10 +41,10 @@ public class YXTSentinelAspect extends AbstractYXTSentinelAspectSupport {
     public Object invokeResourceWithSentinel(ProceedingJoinPoint pjp) throws Throwable {
         Method originMethod = resolveMethod(pjp);
 
-        YXTSentinel annotation = originMethod.getAnnotation(YXTSentinel.class);
+        YxtSentinel annotation = originMethod.getAnnotation(YxtSentinel.class);
         if (annotation == null) {
             Class<?> targetClass = pjp.getTarget().getClass();
-            annotation = targetClass.getAnnotation(YXTSentinel.class);
+            annotation = targetClass.getAnnotation(YxtSentinel.class);
         }
         if (annotation == null) {
             throw new IllegalStateException("Wrong state for YxtSentinel annotation");
