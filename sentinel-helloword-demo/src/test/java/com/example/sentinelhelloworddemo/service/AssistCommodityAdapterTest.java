@@ -19,7 +19,6 @@ import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowItem;
 import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowRule;
 import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowRuleManager;
 import com.alibaba.csp.sentinel.util.TimeUtil;
-import com.alibaba.fastjson.JSON;
 import com.example.sentinelhelloworddemo.SentinelHellowordDemoApplicationTests;
 import com.example.sentinelhelloworddemo.constans.SentinelConstants;
 import java.io.IOException;
@@ -53,28 +52,7 @@ public class AssistCommodityAdapterTest {
      * 0 } ]
      */
     private static void initFlowRules() {
-        FlowRule flowRule = JSON.parseObject(" {\n"
-            + "        \"app\": \"assist-core-toolkit-local\",\n"
-            + "        \"clusterConfig\": {\n"
-            + "            \"fallbackToLocalWhenFail\": true,\n"
-            + "            \"sampleCount\": 10,\n"
-            + "            \"strategy\": 0,\n"
-            + "            \"thresholdType\": 0,\n"
-            + "            \"windowIntervalMs\": 1000\n"
-            + "        },\n"
-            + "        \"clusterMode\": false,\n"
-            + "        \"controlBehavior\": 0,\n"
-            + "        \"count\": 1.0,\n"
-            + "        \"gmtCreate\": 1725876637357,\n"
-            + "        \"gmtModified\": 1725876637357,\n"
-            + "        \"grade\": 1,\n"
-            + "        \"id\": 27,\n"
-            + "        \"ip\": \"10.4.1.125\",\n"
-            + "        \"limitApp\": \"default\",\n"
-            + "        \"port\": 8719,\n"
-            + "        \"resource\": \"com.yxt.assist.toolkit.dao.coldchain.monitoring.dao.impl.ColdChainAlarmOrderDaoImpl.pageAlarmOrder\",\n"
-            + "        \"strategy\": 0\n"
-            + "    }", FlowRule.class);
+
         List<FlowRule> rules = new ArrayList<FlowRule>();
         FlowRule rule1 = new FlowRule();
         rule1.setResource("HelloWorld");
@@ -93,7 +71,6 @@ public class AssistCommodityAdapterTest {
         rule1.setGrade(RuleConstant.FLOW_GRADE_QPS);
         rule1.setLimitApp("default");
         rules.add(rule1);
-        rules.add(flowRule);
         FlowRuleManager.loadRules(rules);
     }
 
@@ -141,6 +118,7 @@ public class AssistCommodityAdapterTest {
 
         // 配置规则.
         initFlowRules();
+        Thread.sleep(2000);
 
         for (int j = 0; j < 2; j++) {
             new Thread(new Runnable() {
@@ -151,7 +129,7 @@ public class AssistCommodityAdapterTest {
                     for (int k = 0; k < 30; k++) {
                         // 1.5.0 版本开始可以直接利用 try-with-resources 特性 自动回收调用  entry.exit() 配合注解使用 @SentinelResource("HelloWorld")
                         try (Entry entry = SphU.entry(
-                            "com.yxt.assist.toolkit.dao.coldchain.monitoring.dao.impl.ColdChainAlarmOrderDaoImpl.pageAlarmOrder",
+                            "HelloWorld",
                             EntryType.IN)) {
                             // 被保护的逻辑
                             System.out.println(Thread.currentThread().getId() + "hello world" + (++i));
