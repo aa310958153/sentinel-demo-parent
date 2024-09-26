@@ -1,6 +1,7 @@
 package com.example.sentinelapp1demo.demos.web;
 
 import com.alibaba.csp.sentinel.slots.block.BlockException;
+import com.example.sentinelnacosdatasourcedemosdk.Student;
 import org.springframework.web.bind.annotation.PathVariable;
 
 /**
@@ -20,5 +21,12 @@ public class UserControllerFallBack extends UserController {
         user.setName("我是降级返回");
         user.setAge(id.intValue());
         return user;
+    }
+
+    @Override
+    public Student feginRuleRq() throws InterruptedException {
+        Student student = new Student();
+        student.setName("自定义fallback");
+        return student;
     }
 }

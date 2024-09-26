@@ -21,6 +21,8 @@ import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.example.sentinelapp1demo.config.FeignConfiguration;
 import com.example.sentinelapp1demo.config.FeignConfiguration2;
 import com.example.sentinelapp1demo.service.UserService;
+import com.example.sentinelnacosdatasourcedemosdk.Student;
+import com.example.sentinelnacosdatasourcedemosdk.StudentOpenApi;
 import com.yxt.starter.sentinel.annotation.YxtSentinel;
 import java.util.Collections;
 import java.util.List;
@@ -38,6 +40,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @YxtSentinel(configFallbackClass = UserControllerFallBack.class, configuration = FeignConfiguration2.class)
 public class UserController {
 
+    @Resource
+    StudentOpenApi studentOpenApi;
     @Resource
     private UserService userService;
 
@@ -103,6 +107,12 @@ public class UserController {
         return "index.html";
     }
 
+    @RequestMapping("user/feign-rule-rq")
+    @ResponseBody
+    public Student feginRuleRq()
+        throws InterruptedException {
+        return studentOpenApi.getStudent("测试");
+    }
    /* @ModelAttribute
     public void parseUser(@RequestParam(name = "name", defaultValue = "unknown user") String name
         , @RequestParam(name = "age", defaultValue = "12") Integer age, User user) {

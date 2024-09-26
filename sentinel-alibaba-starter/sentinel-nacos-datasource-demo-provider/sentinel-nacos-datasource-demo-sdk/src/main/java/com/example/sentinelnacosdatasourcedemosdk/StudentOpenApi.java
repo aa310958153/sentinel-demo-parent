@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @Date 2024/8/20 21:38
  */
 @RequestMapping({"open-sdk/studnet/r"})
-@FeignClient(name = "demo-provider", fallback = StudentOpenApiFallback.class, configuration = FeignConfiguration.class)
+/*@FeignClient(name = "demo-provider", fallback = StudentOpenApiFallback.class, configuration = FeignConfiguration.class)*/
+@FeignClient(name = "demo-provider")
 public interface StudentOpenApi {
 
     @RequestMapping("getStudent")

@@ -35,6 +35,16 @@ import org.springframework.util.CollectionUtils;
 public class YxtSentinelAutoConfiguration {
 
 
+    /**
+     * sentinel异常处理器
+     *
+     * @return
+     */
+    @Bean
+    public YxtSentinelHandlerExceptionResolver yxtSentinelHandlerExceptionResolver() {
+        return new YxtSentinelHandlerExceptionResolver();
+    }
+
     @Bean
     public YxtSentinelSpecificationRegister yxtSentinelSpecificationRegister() {
         return new YxtSentinelSpecificationRegister();
