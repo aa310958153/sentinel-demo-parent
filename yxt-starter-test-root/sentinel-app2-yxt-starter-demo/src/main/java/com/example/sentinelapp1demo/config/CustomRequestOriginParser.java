@@ -13,6 +13,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomRequestOriginParser implements RequestOriginParser {
 
+    public CustomRequestOriginParser() {
+        System.out.println("CustomRequestOriginParser init");
+    }
+
     @Override
     public String parseOrigin(HttpServletRequest request) {
         //根据url 的origin作为来源

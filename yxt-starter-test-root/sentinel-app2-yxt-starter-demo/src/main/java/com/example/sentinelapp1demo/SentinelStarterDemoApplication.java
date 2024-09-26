@@ -5,9 +5,13 @@ import java.lang.management.RuntimeMXBean;
 import java.util.List;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
-public class SentinelApp2DemoApplication {
+@EnableDiscoveryClient
+@EnableFeignClients(basePackages = {"com.example.sentinelnacosdatasourcedemosdk"})
+public class SentinelStarterDemoApplication {
 
     public static void main(String[] args) {
         // 获取RuntimeMXBean实例
@@ -21,7 +25,7 @@ public class SentinelApp2DemoApplication {
         for (String arg : inputArguments) {
             System.out.println(arg);
         }
-        SpringApplication.run(SentinelApp2DemoApplication.class, args);
+        SpringApplication.run(SentinelStarterDemoApplication.class, args);
     }
 
 }

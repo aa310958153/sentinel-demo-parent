@@ -2,6 +2,8 @@ package com.example.sentinelapp1demo.demos.web;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.example.sentinelapp1demo.service.UserService;
+import com.example.sentinelnacosdatasourcedemosdk.Student;
+import com.example.sentinelnacosdatasourcedemosdk.StudentOpenApi;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Resource;
@@ -22,6 +24,16 @@ public class SentinelBlockTestController {
 
     @Resource
     UserService userService;
+
+    @Resource
+    StudentOpenApi studentOpenApi;
+
+    @RequestMapping("/feign-rule-rq")
+    @ResponseBody
+    public Student feginRuleRq()
+        throws InterruptedException {
+        return studentOpenApi.getStudent("测试");
+    }
 
 
     @RequestMapping("/flow-rule-qps")

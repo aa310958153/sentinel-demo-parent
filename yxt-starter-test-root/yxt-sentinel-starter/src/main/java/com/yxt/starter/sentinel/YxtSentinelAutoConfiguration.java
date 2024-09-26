@@ -2,12 +2,14 @@ package com.yxt.starter.sentinel;
 
 import com.alibaba.cloud.sentinel.feign.SentinelFeignAutoConfiguration;
 import com.alibaba.csp.sentinel.adapter.spring.webmvc.callback.BlockExceptionHandler;
+import com.alibaba.csp.sentinel.adapter.spring.webmvc.callback.RequestOriginParser;
 import com.yxt.starter.sentinel.aspectj.YxtSentinelAspect;
 import com.yxt.starter.sentinel.constants.YxtSentinelConstants;
 import com.yxt.starter.sentinel.context.YxtSentinelContext;
 import com.yxt.starter.sentinel.context.YxtSentinelSpecification;
 import com.yxt.starter.sentinel.context.YxtSentinelSpecificationRegister;
 import com.yxt.starter.sentinel.fegin.YxtSentinelFeign;
+import com.yxt.starter.sentinel.fegin.YxtSentinelFeignRequestInterceptor;
 import com.yxt.starter.sentinel.io.YxtSentinelConfigLoader;
 import feign.Feign;
 import java.util.ArrayList;
@@ -61,7 +63,7 @@ public class YxtSentinelAutoConfiguration {
      * @return
      */
     @Bean
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(RequestOriginParser.class)
     public YxtCustomRequestOriginParser yxtCustomRequestOriginParser() {
         return new YxtCustomRequestOriginParser();
     }
@@ -103,4 +105,10 @@ public class YxtSentinelAutoConfiguration {
     public SentinelEventObserverRegistry sentinelEventObserverRegistry() {
         return new SentinelEventObserverRegistry();
     }
+
+    @Bean
+    public YxtSentinelFeignRequestInterceptor yxtSentinelFeignRequestInterceptor() {
+        return new YxtSentinelFeignRequestInterceptor();
+    }
+
 }

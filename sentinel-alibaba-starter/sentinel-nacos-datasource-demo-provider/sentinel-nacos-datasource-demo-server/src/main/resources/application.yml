@@ -2,7 +2,7 @@ server:
   port: 9001
 spring:
   application:
-    name: sentinel-nacos-datasource-demo-server
+    name: demo-provider
   cloud:
     nacos:
       discovery.server-addr: 127.0.0.1:8848
