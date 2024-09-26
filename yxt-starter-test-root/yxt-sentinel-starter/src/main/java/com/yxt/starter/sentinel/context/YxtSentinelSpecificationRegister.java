@@ -1,7 +1,7 @@
 package com.yxt.starter.sentinel.context;
 
 import com.yxt.starter.sentinel.annotation.YxtSentinel;
-import com.yxt.starter.sentinel.constants.YXTSentinelConstants;
+import com.yxt.starter.sentinel.constants.YxtSentinelConstants;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +17,10 @@ import org.springframework.core.annotation.AnnotationUtils;
  * @Author liqiang
  * @Date 2024/8/28 15:51
  */
-public class YXTSentinelSpecificationRegister implements BeanPostProcessor {
+public class YxtSentinelSpecificationRegister implements BeanPostProcessor {
 
 
-    private final List<YXTSentinelSpecification> yxtSentinelSpecificationList = new ArrayList<>();
+    private final List<YxtSentinelSpecification> yxtSentinelSpecificationList = new ArrayList<>();
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
@@ -38,8 +38,8 @@ public class YXTSentinelSpecificationRegister implements BeanPostProcessor {
         if (configurationArr == null || configurationArr.length <= 0) {
             return;
         }
-        YXTSentinelSpecification yxtSentinelSpecification = new YXTSentinelSpecification();
-        yxtSentinelSpecification.setName(YXTSentinelConstants.CONTEXT_NAME);
+        YxtSentinelSpecification yxtSentinelSpecification = new YxtSentinelSpecification();
+        yxtSentinelSpecification.setName(YxtSentinelConstants.CONTEXT_NAME);
         yxtSentinelSpecification.setConfiguration(configurationArr);
         yxtSentinelSpecificationList.add(yxtSentinelSpecification);
     }
@@ -59,8 +59,8 @@ public class YXTSentinelSpecificationRegister implements BeanPostProcessor {
             YxtSentinel yxtSentinel = methodYXTSentinelEntry.getValue();
             if (yxtSentinel != null && yxtSentinel.configuration() != null
                 && yxtSentinel.configuration().length > 0) {
-                YXTSentinelSpecification yxtSentinelSpecification = new YXTSentinelSpecification();
-                yxtSentinelSpecification.setName(YXTSentinelConstants.CONTEXT_NAME);
+                YxtSentinelSpecification yxtSentinelSpecification = new YxtSentinelSpecification();
+                yxtSentinelSpecification.setName(YxtSentinelConstants.CONTEXT_NAME);
                 yxtSentinelSpecification.setConfiguration(yxtSentinel.configuration());
                 yxtSentinelSpecificationList.add(yxtSentinelSpecification);
             }
@@ -79,7 +79,7 @@ public class YXTSentinelSpecificationRegister implements BeanPostProcessor {
         return (AnnotatedElementUtils.hasAnnotation(bean.getClass(), YxtSentinel.class));
     }
 
-    public List<YXTSentinelSpecification> getYxtSentinelSpecificationList() {
+    public List<YxtSentinelSpecification> getYxtSentinelSpecificationList() {
         return yxtSentinelSpecificationList;
     }
 }

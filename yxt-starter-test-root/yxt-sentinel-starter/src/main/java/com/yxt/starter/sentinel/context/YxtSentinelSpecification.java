@@ -8,16 +8,16 @@ import org.springframework.cloud.context.named.NamedContextFactory;
  * @Author liqiang
  * @Date 2024/8/28 11:36
  */
-public class YXTSentinelSpecification implements NamedContextFactory.Specification {
+public class YxtSentinelSpecification implements NamedContextFactory.Specification {
 
     private String name;
 
     private Class<?>[] configuration;
 
-    public YXTSentinelSpecification() {
+    public YxtSentinelSpecification() {
     }
 
-    public YXTSentinelSpecification(String name, Class<?>[] configuration) {
+    public YxtSentinelSpecification(String name, Class<?>[] configuration) {
         this.name = name;
         this.configuration = configuration;
     }
@@ -46,7 +46,7 @@ public class YXTSentinelSpecification implements NamedContextFactory.Specificati
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        YXTSentinelSpecification that = (YXTSentinelSpecification) o;
+        YxtSentinelSpecification that = (YxtSentinelSpecification) o;
         return Objects.equals(this.name, that.name)
             && Arrays.equals(this.configuration, that.configuration);
     }

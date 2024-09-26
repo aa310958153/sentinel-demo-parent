@@ -1,6 +1,6 @@
 package com.yxt.starter.sentinel.io;
 
-import com.yxt.starter.sentinel.constants.YXTSentinelConstants;
+import com.yxt.starter.sentinel.constants.YxtSentinelConstants;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.UrlResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.lang.Nullable;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
@@ -29,7 +30,10 @@ public class YxtSentinelConfigLoader {
     public static List<Class<?>> loadYxtSentinelConfig(@Nullable ClassLoader classLoader) {
         List<Class<?>> configClassList = new ArrayList<>();
         Map<String, List<String>> configNames = loadYxtSentinelConfigNames(classLoader);
-        List<String> classNameList = configNames.get(YXTSentinelConstants.YXT_SENTINEL_CONFIG);
+        List<String> classNameList = configNames.get(YxtSentinelConstants.YXT_SENTINEL_CONFIG);
+        if (CollectionUtils.isEmpty(classNameList)) {
+            return configClassList;
+        }
         for (String className : classNameList) {
             try {
                 configClassList.add(Class.forName(className));

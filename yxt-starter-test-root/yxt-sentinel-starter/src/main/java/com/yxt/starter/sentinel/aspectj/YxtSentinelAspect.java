@@ -30,7 +30,7 @@ import org.aspectj.lang.annotation.Pointcut;
  * 自定注解切面
  */
 @Aspect
-public class YXTSentinelAspect extends AbstractYXTSentinelAspectSupport {
+public class YxtSentinelAspect extends AbstractYxtSentinelAspectSupport {
 
 
     @Pointcut("@within(com.yxt.starter.sentinel.annotation.YxtSentinel)")

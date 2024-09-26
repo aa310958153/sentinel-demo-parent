@@ -22,9 +22,9 @@ import org.springframework.core.io.ResourceLoader;
  * @Author liqiang
  * @Date 2024/8/27 10:19
  */
-public class YXTSentinelEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
+public class YxtSentinelEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
-    private static final Logger logger = LoggerFactory.getLogger(YXTSentinelEnvironmentPostProcessor.class);
+    private static final Logger logger = LoggerFactory.getLogger(YxtSentinelEnvironmentPostProcessor.class);
 
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {

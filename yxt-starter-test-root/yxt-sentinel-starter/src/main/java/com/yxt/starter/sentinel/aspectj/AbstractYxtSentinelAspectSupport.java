@@ -21,8 +21,8 @@ import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.csp.sentinel.util.MethodUtil;
 import com.alibaba.csp.sentinel.util.StringUtil;
 import com.yxt.starter.sentinel.annotation.YxtSentinel;
-import com.yxt.starter.sentinel.constants.YXTSentinelConstants;
-import com.yxt.starter.sentinel.context.YXTSentinelContext;
+import com.yxt.starter.sentinel.constants.YxtSentinelConstants;
+import com.yxt.starter.sentinel.context.YxtSentinelContext;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -35,11 +35,11 @@ import org.springframework.context.annotation.Lazy;
 /**
  * YXTSentinel抽象切面抽象父类
  */
-public abstract class AbstractYXTSentinelAspectSupport {
+public abstract class AbstractYxtSentinelAspectSupport {
 
     @Lazy
     @Resource
-    YXTSentinelContext yxtSentinelContext;
+    YxtSentinelContext yxtSentinelContext;
 
     protected void traceException(Throwable ex) {
         Tracer.trace(ex);
@@ -178,7 +178,7 @@ public abstract class AbstractYXTSentinelAspectSupport {
             Class<?>[] parameterTypes = method.getParameterTypes();
             Method declaredMethodFor = getDeclaredMethodFor(yxtSentinel.configFallbackClass(), method.getName(),
                 parameterTypes);
-            Object instance = yxtSentinelContext.getInstance(YXTSentinelConstants.CONTEXT_NAME,
+            Object instance = yxtSentinelContext.getInstance(YxtSentinelConstants.CONTEXT_NAME,
                 yxtSentinel.configFallbackClass());
             try {
                 return declaredMethodFor.invoke(instance, point.getArgs());
@@ -196,13 +196,13 @@ public abstract class AbstractYXTSentinelAspectSupport {
         }
         boolean mustStatic = locationClass != null && locationClass.length >= 1;
         Class<?> clazz = mustStatic ? locationClass[0] : pjp.getTarget().getClass();
-        MethodWrapper m = YXTSentinelMetadataRegistry.lookupFallback(clazz,
+        MethodWrapper m = YxtSentinelMetadataRegistry.lookupFallback(clazz,
             fallbackName);
         if (m == null) {
             // First time, resolve the fallback.
             Method method = resolveFallbackInternal(pjp, fallbackName, clazz, mustStatic);
             // Cache the method instance.
-            YXTSentinelMetadataRegistry.updateFallbackFor(clazz, fallbackName, method);
+            YxtSentinelMetadataRegistry.updateFallbackFor(clazz, fallbackName, method);
             return method;
         }
         if (!m.isPresent()) {
@@ -227,7 +227,7 @@ public abstract class AbstractYXTSentinelAspectSupport {
         boolean mustStatic = locationClass != null && locationClass.length >= 1;
         Class<?> clazz = mustStatic ? locationClass[0] : pjp.getTarget().getClass();
 
-        MethodWrapper m = YXTSentinelMetadataRegistry.lookupDefaultFallback(clazz, defaultFallback);
+        MethodWrapper m = YxtSentinelMetadataRegistry.lookupDefaultFallback(clazz, defaultFallback);
         if (m == null) {
             // First time, resolve the default fallback.
             Class<?> originReturnType = resolveMethod(pjp).getReturnType();
@@ -243,7 +243,7 @@ public abstract class AbstractYXTSentinelAspectSupport {
                 method = findMethod(mustStatic, clazz, defaultFallback, originReturnType, paramTypeWithException);
             }
             // Cache the method instance.
-            YXTSentinelMetadataRegistry.updateDefaultFallbackFor(clazz, defaultFallback, method);
+            YxtSentinelMetadataRegistry.updateDefaultFallbackFor(clazz, defaultFallback, method);
             return method;
         }
         if (!m.isPresent()) {
@@ -281,13 +281,13 @@ public abstract class AbstractYXTSentinelAspectSupport {
             // By default current class.
             clazz = pjp.getTarget().getClass();
         }
-        MethodWrapper m = YXTSentinelMetadataRegistry.lookupBlockHandler(clazz,
+        MethodWrapper m = YxtSentinelMetadataRegistry.lookupBlockHandler(clazz,
             name);
         if (m == null) {
             // First time, resolve the block handler.
             Method method = resolveBlockHandlerInternal(pjp, name, clazz, mustStatic);
             // Cache the method instance.
-            YXTSentinelMetadataRegistry.updateBlockHandlerFor(clazz, name, method);
+            YxtSentinelMetadataRegistry.updateBlockHandlerFor(clazz, name, method);
             return method;
         }
         if (!m.isPresent()) {

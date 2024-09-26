@@ -18,11 +18,21 @@ package com.yxt.starter.sentinel.aspectj;
 import java.lang.reflect.Method;
 
 /**
- * @author liqiang
+ * 存储降级方法的元数据
+ *
+ * @Author liqiang
+ * @Date 2024/9/3 10:19
  */
 public class MethodWrapper {
 
+    /**
+     * method元数据
+     */
     private final Method method;
+
+    /**
+     * 防止缓存穿透，如果未false 表示不存在
+     */
     private final boolean present;
 
     private MethodWrapper(Method method, boolean present) {
@@ -30,14 +40,14 @@ public class MethodWrapper {
         this.present = present;
     }
 
-    static MethodWrapper wrap(Method method) {
+    public static MethodWrapper wrap(Method method) {
         if (method == null) {
             return none();
         }
         return new MethodWrapper(method, true);
     }
 
-    static MethodWrapper none() {
+    public static MethodWrapper none() {
         return new MethodWrapper(null, false);
     }
 
@@ -45,7 +55,7 @@ public class MethodWrapper {
         return method;
     }
 
-    boolean isPresent() {
+    public boolean isPresent() {
         return present;
     }
 
