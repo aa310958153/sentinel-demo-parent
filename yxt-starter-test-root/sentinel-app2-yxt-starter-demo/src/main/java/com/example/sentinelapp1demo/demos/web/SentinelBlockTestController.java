@@ -1,11 +1,14 @@
 package com.example.sentinelapp1demo.demos.web;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.example.sentinelapp1demo.service.UserService;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Resource;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -77,6 +80,69 @@ public class SentinelBlockTestController {
         Map<String, Object> resData = new HashMap<>();
         resData.put("status", 200);
         resData.put("msg", "操作成功");
+        return resData;
+    }
+
+    /**
+     * 流控热点参数
+     *
+     * @return
+     * @throws InterruptedException
+     */
+    @RequestMapping("/flow-rule-params-string")
+    @SentinelResource("flowRuleParamsString")
+    @ResponseBody
+    public Map<String, Object> flowRuleParams(@RequestParam(value = "name", required = false) String name)
+        throws InterruptedException {
+        return getResData();
+    }
+
+    /**
+     * 流控热点参数 com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowSlot#checkFlow
+     *
+     * @return
+     * @throws InterruptedException
+     */
+    @RequestMapping("/flow-rule-params-object")
+    @SentinelResource("flowRuleParamsObject")
+    @ResponseBody
+    public Map<String, Object> flowRuleParams(@RequestBody User user)
+        throws InterruptedException {
+        return getResData();
+    }
+
+    @RequestMapping("/system-rule-rq")
+    @ResponseBody
+    public Map<String, Object> systemRuleRt() {
+        return getResData();
+    }
+
+    @RequestMapping("/system-rule-rt")
+    @ResponseBody
+    public Map<String, Object> systemRuleRt(@RequestParam(value = "seconds", required = false) Integer seconds)
+        throws InterruptedException {
+        Thread.sleep(seconds);
+        return getResData();
+    }
+
+
+    /**
+     * com.example.sentinelnacosdatasourcedemo.config.CustomRequestOriginParser
+     *
+     * @return
+     */
+    @RequestMapping("/authority-rule")
+    @ResponseBody
+    public Map<String, Object> authorityRule() {
+        return getResData();
+    }
+
+    private Map<String, Object> getResData() {
+        Map<String, Object> resData = new HashMap<>();
+        resData.put("status", 200);
+        resData.put("msg",
+            "操作成功|" + Thread.currentThread().getId() + "|" + DateFormatUtils.format(System.currentTimeMillis()
+                , "yyyy-MM-dd HH:mm:ss:SSS"));
         return resData;
     }
 

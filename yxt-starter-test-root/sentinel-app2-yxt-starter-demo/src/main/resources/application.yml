@@ -10,3 +10,11 @@ spring:
 server:
   port: 9005
 #spring.cloud.nacos.config.group=DEFAULT_GROUP
+yxt:
+  sentinel:
+    transport:
+      dashboard: 127.0.0.1:8080
+    datasource:
+      namespace: f981fdb6-c9f2-455e-814e-c48bf33ced62
+      group-id: SENTINEL_GROUP
+      server-addr: 127.0.0.1:8848
