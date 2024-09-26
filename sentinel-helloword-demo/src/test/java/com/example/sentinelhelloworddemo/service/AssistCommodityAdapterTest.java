@@ -12,7 +12,6 @@ import com.alibaba.csp.sentinel.slots.block.degrade.DegradeRuleManager;
 import com.alibaba.csp.sentinel.slots.block.degrade.circuitbreaker.CircuitBreaker.State;
 import com.alibaba.csp.sentinel.slots.block.degrade.circuitbreaker.CircuitBreakerStrategy;
 import com.alibaba.csp.sentinel.slots.block.degrade.circuitbreaker.EventObserverRegistry;
-import com.alibaba.csp.sentinel.slots.block.flow.ClusterFlowConfig;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
 import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowItem;
@@ -56,15 +55,8 @@ public class AssistCommodityAdapterTest {
         List<FlowRule> rules = new ArrayList<FlowRule>();
         FlowRule rule1 = new FlowRule();
         rule1.setResource("HelloWorld");
-
-        ClusterFlowConfig config = new ClusterFlowConfig();
-        config.setFallbackToLocalWhenFail(true);
-        config.setSampleCount(10);
-        config.setThresholdType(0);
-        config.setWindowIntervalMs(1000);
-        rule1.setClusterConfig(config);
         // set limit qps to 20
-        rule1.setCount(1);
+        rule1.setCount(20);
         rule1.setStrategy(0);
         rule1.setClusterMode(false);
         rule1.setControlBehavior(0);
@@ -111,22 +103,21 @@ public class AssistCommodityAdapterTest {
     }
 
     /**
-     * 配合控制台使用: 文档参考：https://sentinelguard.io/zh-cn/docs/dashboard.html
+     * 配合控制台使用: 文档参考：https://sentinelguard.io/zh-cn/docs/dashboard.html 使用scp log来看通过放行情况
      */
     @Test
     public void flowRule_TEST() throws InterruptedException {
 
         // 配置规则.
         initFlowRules();
-        Thread.sleep(2000);
 
-        for (int j = 0; j < 2; j++) {
+        for (int j = 0; j < 50; j++) {
             new Thread(new Runnable() {
                 int i = 0;
 
                 @Override
                 public void run() {
-                    for (int k = 0; k < 30; k++) {
+                    while (true) {
                         // 1.5.0 版本开始可以直接利用 try-with-resources 特性 自动回收调用  entry.exit() 配合注解使用 @SentinelResource("HelloWorld")
                         try (Entry entry = SphU.entry(
                             "HelloWorld",
@@ -136,8 +127,7 @@ public class AssistCommodityAdapterTest {
 
                         } catch (BlockException ex) {
                             i++;
-                            // 处理被流控的逻辑
-                            System.out.println("blocked!");
+
 
                         }
                     }
