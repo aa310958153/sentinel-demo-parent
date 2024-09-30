@@ -11,12 +11,16 @@ import com.yxt.starter.sentinel.context.YxtSentinelSpecificationRegister;
 import com.yxt.starter.sentinel.fegin.YxtSentinelFeign;
 import com.yxt.starter.sentinel.fegin.YxtSentinelFeignRequestInterceptor;
 import com.yxt.starter.sentinel.io.YxtSentinelConfigLoader;
+import com.yxt.starter.sentinel.spring.web.YxtCustomBlockExceptionHandler;
+import com.yxt.starter.sentinel.spring.web.YxtCustomRequestOriginParser;
+import com.yxt.starter.sentinel.spring.web.YxtSentinelHandlerExceptionResolver;
 import feign.Feign;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -32,6 +36,7 @@ import org.springframework.util.CollectionUtils;
  */
 @Configuration
 @AutoConfigureBefore(SentinelFeignAutoConfiguration.class)
+@EnableConfigurationProperties(YxtSentinelProperties.class)
 public class YxtSentinelAutoConfiguration {
 
 

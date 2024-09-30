@@ -1,0 +1,29 @@
+{
+  "properties": [
+    {
+      "name": "yxt.sentinel.transport.dashboard",
+      "type": "java.lang.String",
+      "description": "dashboard地址"
+    },
+    {
+      "name": "yxt.sentinel.datasource.namespace",
+      "type": "java.lang.String",
+      "description": "nacos持久化命名空间"
+    },
+    {
+      "name": "yxt.sentinel.datasource.group-id",
+      "type": "java.lang.String",
+      "description": "nacos持久化group-id"
+    },
+    {
+      "name": "yxt.sentinel.auth.tagList",
+      "type": "java.util.List",
+      "description": "哪些团队可以看到 兼容 alarm.sendErrorLog.totag"
+    },
+    {
+      "name": "yxt.sentinel.auth.userList",
+      "type": "java.util.List",
+      "description": "哪些用户可以看见 兼容alarm.sendErrorLog.touser"
+    }
+  ]
+}

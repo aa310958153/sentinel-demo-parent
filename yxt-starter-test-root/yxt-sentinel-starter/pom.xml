@@ -43,7 +43,11 @@
             <groupId>org.springframework.boot</groupId>
             <optional>true</optional>
         </dependency>
-
+        <dependency>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
     <groupId>com.yxt</groupId>
     <modelVersion>4.0.0</modelVersion>

@@ -1,4 +1,4 @@
-package com.yxt.starter.sentinel;
+package com.yxt.starter.sentinel.spring.web;
 
 import com.alibaba.csp.sentinel.adapter.spring.webmvc.callback.RequestOriginParser;
 import com.yxt.starter.sentinel.constants.YxtSentinelConstants;

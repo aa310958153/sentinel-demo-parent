@@ -1,4 +1,4 @@
-package com.yxt.starter.sentinel;
+package com.yxt.starter.sentinel.spring.web;
 
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import java.lang.reflect.UndeclaredThrowableException;
@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.Ordered;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -15,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
  *
  * @Author liqiang
  */
-public class YxtSentinelHandlerExceptionResolver implements HandlerExceptionResolver {
+public class YxtSentinelHandlerExceptionResolver implements HandlerExceptionResolver, Ordered {
 
     private static final Logger logger = LoggerFactory.getLogger(YxtSentinelHandlerExceptionResolver.class);
     @Resource
@@ -47,5 +48,11 @@ public class YxtSentinelHandlerExceptionResolver implements HandlerExceptionReso
         }
         // 不符合处理条件，交给后续异常处理器处理
         return null;
+    }
+
+    @Override
+    public int getOrder() {
+        //优先级最高，避免流控异常被别的异常处理器处理
+        return Integer.MIN_VALUE;
     }
 }

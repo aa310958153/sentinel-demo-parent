@@ -29,6 +29,11 @@ public final class YxtSentinelConstants {
      */
     public static final String HEAD_SERVICE_NAME_KEY = "service-name";
 
+    /**
+     * yxt sentinel前缀
+     */
+    public static final String PROPERTY_PREFIX = "yxt.sentinel";
+
     private YxtSentinelConstants() {
 
     }
