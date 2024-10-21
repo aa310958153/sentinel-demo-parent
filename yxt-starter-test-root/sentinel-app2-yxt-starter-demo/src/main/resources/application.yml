@@ -20,8 +20,20 @@ yxt:
       namespace: f981fdb6-c9f2-455e-814e-c48bf33ced62
       group-id: SENTINEL_GROUP
       server-addr: 127.0.0.1:8848
-    auth:
-      tagList:
-        - 123456
-      userList:
-        - 1162324
+
+alarm:
+  sendErrorLog:
+    # 非必须，是否开启 true:开启 fasle:关闭 默认true
+    enable: true
+    # 非必须，应用secret，不配置使用默认应用，获取方式：https://developer.work.weixin.qq.com/document/path/90665
+    corpse:
+    # 非必须，应用agentid，不配置使用默认应用，获取方式：https://developer.work.weixin.qq.com/document/path/90665
+    agentid:
+    # 非必须，接收人员ids（获取方式请看下图），单个示例：1152993；多个示例：1152993|1152694，目前已经根据分组发送，新项目才需要配置，多个使用|分隔
+    touser: 1151049|1153122|1153892|1154009|1154438|1154974|1154250|1154011|1155250|1152856|1160096|1160295|1160905|1160910|1162324
+    # 非必须，接收部门ids，示例：100627849
+    toparty:
+    # 非必须，接收tag，需联系管理员将接收人员分标签组后，配置分组tag即可
+    totag:
+    # 非必须，过滤白名单，如果有不关心的重复日志，可以配置白名单不发送，多个使用5个|分隔（|||||）
+    whitelist: 版本号格式错误

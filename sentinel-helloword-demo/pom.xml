@@ -46,7 +46,7 @@
         <dependency>
             <artifactId>sentinel-core</artifactId>
             <groupId>com.alibaba.csp</groupId>
-            <version>1.8.8</version>
+            <version>1.8.0</version>
         </dependency>
         <!--powermock开始 mockito 扩展,支持mock静态方法、私有方法-->
         <dependency>
@@ -72,7 +72,7 @@
         <dependency>
             <artifactId>sentinel-parameter-flow-control</artifactId>
             <groupId>com.alibaba.csp</groupId>
-            <version>1.8.8</version>
+            <version>1.8.0</version>
         </dependency>
     </dependencies>
     <dependencyManagement>

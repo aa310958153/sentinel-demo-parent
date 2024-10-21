@@ -2,7 +2,9 @@ package com.example.sentinelhelloworddemo.service;
 
 import com.alibaba.csp.sentinel.Entry;
 import com.alibaba.csp.sentinel.EntryType;
+import com.alibaba.csp.sentinel.ResourceTypeConstants;
 import com.alibaba.csp.sentinel.SphU;
+import com.alibaba.csp.sentinel.context.ContextUtil;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.csp.sentinel.slots.block.RuleConstant;
 import com.alibaba.csp.sentinel.slots.block.authority.AuthorityRule;
@@ -217,5 +219,53 @@ public class AssistCommodityAdapterTest {
         rule.setStrategy(RuleConstant.AUTHORITY_WHITE);
         rule.setLimitApp("appA,appB");
         AuthorityRuleManager.loadRules(Collections.singletonList(rule));
+    }
+
+    @Test
+    public void testOOM() throws InterruptedException {
+        Thread thread = null;
+        for (int i = 0; i < 200; i++) {
+
+            thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    String resourceName = "resourceName";
+                    Entry entry = null;
+                    int i = 0;
+                    int apiIndex = 0;
+                    while (true) {
+                        String origin = String.valueOf(i++);
+                        try {
+                            Thread.sleep(100);
+
+                            ContextUtil.enter(resourceName + (apiIndex++), origin);
+                            entry = SphU.entry(resourceName, ResourceTypeConstants.COMMON_WEB, EntryType.IN);
+                            if (apiIndex > 100) {
+                                apiIndex = 0;
+                            }
+                            if (i > 40000) {
+                                i = 0;
+                            }
+                        } catch (BlockException e) {
+                            try {
+
+                            } finally {
+                                ContextUtil.exit();
+                            }
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        } finally {
+                            if (entry != null) {
+                                entry.exit(1, origin);
+                            }
+                            ContextUtil.exit();
+                        }
+                    }
+                }
+            });
+            thread.start();
+        }
+        thread.join();
+
     }
 }
