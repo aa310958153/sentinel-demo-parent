@@ -11,6 +11,7 @@ import com.yxt.starter.sentinel.context.YxtSentinelSpecificationRegister;
 import com.yxt.starter.sentinel.fegin.YxtSentinelFeign;
 import com.yxt.starter.sentinel.fegin.YxtSentinelFeignRequestInterceptor;
 import com.yxt.starter.sentinel.io.YxtSentinelConfigLoader;
+import com.yxt.starter.sentinel.spring.SpringContextUtil;
 import com.yxt.starter.sentinel.spring.web.YxtCustomBlockExceptionHandler;
 import com.yxt.starter.sentinel.spring.web.YxtCustomRequestOriginParser;
 import com.yxt.starter.sentinel.spring.web.YxtSentinelHandlerExceptionResolver;
@@ -124,6 +125,11 @@ public class YxtSentinelAutoConfiguration {
     @Bean
     public YxtSentinelFeignRequestInterceptor yxtSentinelFeignRequestInterceptor() {
         return new YxtSentinelFeignRequestInterceptor();
+    }
+
+    @Bean
+    public SpringContextUtil springContextUtil() {
+        return new SpringContextUtil();
     }
 
 }
