@@ -78,21 +78,21 @@
                  <groupId>com.alibaba.cloud</groupId>
                  <version>2.1.3.RELEASE</version>
              </dependency>-->
-        <!--     <dependency>
-                 <artifactId>yxt-sentinel-starter</artifactId>
-                 <groupId>com.yxt</groupId>
-                 <version>0.0.1-SNAPSHOT</version>
-             </dependency>-->
+        <dependency>
+            <artifactId>yxt-sentinel-starter</artifactId>
+            <groupId>com.yxt</groupId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <artifactId>sentinel-nacos-datasource-demo-sdk</artifactId>
             <groupId>com.example</groupId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <artifactId>yxt-sentinel-spring-boot-starter</artifactId>
             <groupId>com.yxt</groupId>
             <version>1.0.0</version>
-        </dependency>
+        </dependency>-->
     </dependencies>
     <dependencyManagement>
         <dependencies>
