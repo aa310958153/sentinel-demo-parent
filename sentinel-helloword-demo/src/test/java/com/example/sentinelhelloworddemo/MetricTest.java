@@ -7,14 +7,14 @@ import org.junit.Test;
 /**
  * @Author: qiang.li
  * @Date: 2024/10/24 15:39
- * @Description: 滑动窗口测试
+ * @Description: 滑动窗口测试 sentinel 很多统计都是基于滑动窗口统计的，原理是将时间戳映射到数组的索引上，然后进行累加(保证了原子性)，比如下面的例子 窗口长度为 60 * 1000 * 60/60
  */
 public class MetricTest {
 
     //窗口长度
     private int sampleCount = 60;
 
-    //每个长度窗口期
+    //滑动窗口时间  每个窗口的时间间隔为intervalInMs/sampleCount
     private int intervalInMs = 60 * 1000 * 60;
 
 
